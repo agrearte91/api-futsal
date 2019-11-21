@@ -1,37 +1,30 @@
-import Persona from '../models/Persona';
+import Jugador from '../models/Jugador';
 
 
-export async function crearPersona(req, res) {
-    const { dni, nombre, apellido, fecha_nacimiento, telefono } = req.body;
-    console.log(req.body)
+export async function crearJugador(req, res) {
+    const { dni, legajo, facultad} = req.body;
     try {
-        let nuevaPersona = await Persona.create({
+        let nuevoJugador = await Jugador.create({
             dni,
-            nombre,
-            apellido,
-            fecha_nacimiento,
-            telefono
+            legajo,
+            facultad
         })
-        console.log(nuevaPersona)
-        if (nuevaPersona) {
+        if (nuevoJugador) {
             res.json({
                 mensaje: 'todo piola',
-                data: nuevaPersona
+                data: nuevoJugador
             })
         }
 
-
     } catch (e) {
         res.status(500).json({
-            mensale: 'todo mal',
-            data: {}
-
+            mensaje: e.message
         })
     }
 
 }
 
-export async function obtenerPersonas(req, res){
+/*export async function obtenerPersonas(req, res){
     try {
         let personas = await Persona.findAll();
         if(personas){
@@ -124,4 +117,4 @@ export async function actualizarPersona(req, res) {
 
         })
     }
-}
+} */

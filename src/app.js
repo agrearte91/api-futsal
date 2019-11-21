@@ -12,6 +12,6 @@ app.use(json()); //para que el servidor entienda los datos en formato json
 //
 
 app.use('/api/persona', personaRoutes);
-app.use('/api/jugadore', jugadorRoutes);
+app.use('/api/jugador', jugadorRoutes);
 
 export default app;

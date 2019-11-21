@@ -5,9 +5,9 @@ import Persona from './Persona'
 export const Jugador = sequelize.define('Jugador', {
         dni: {
             type: Sequelize.TEXT,
-            primarykey: true
+            primaryKey: true
 
-        },
+        }, 
         legajo: {
             type: Sequelize.TEXT
         },
@@ -15,9 +15,13 @@ export const Jugador = sequelize.define('Jugador', {
             type: Sequelize.TEXT
         }
     }, {
-        timestamps: false
+        timestamps: false,
+        freezeTableName: true
     }
 
 );
 
-Jugador.belongTo(Persona, { foreingKey: 'dni', sourceKey: 'dni' })
+Jugador.belongsTo(Persona, { foreingKey: 'dni', sourceKey: 'dni' })
+
+
+export default Jugador;

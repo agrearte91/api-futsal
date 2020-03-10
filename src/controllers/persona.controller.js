@@ -1,127 +1,103 @@
-import Persona from '../models/Persona';
+import PersonaService from '../services/PersonaService';
+import Util from '../utils/Utils';
 
+const util = new Util();
 
-export async function crearPersona(req, res) {
-    const { dni, nombre, apellido, fecha_nacimiento, telefono } = req.body;
-    console.log(req.body)
-    try {
-        let nuevaPersona = await Persona.create({
-            dni,
-            nombre,
-            apellido,
-            fecha_nacimiento,
-            telefono
-        })
-        console.log(nuevaPersona)
-        if (nuevaPersona) {
-            res.json({
-                mensaje: 'todo piola',
-                data: nuevaPersona
-            })
+class PersonaController {
+    static async crearPersona(req, res) {    
+        try {    
+            const nuevaPersona = req.body;
+            const personaCreada = await PersonaService.agregarPersona(nuevaPersona);
+
+            util.setSuccess(201,'Persona añadida',personaCreada);
+            return util.send(res);
         }
+        catch (error){
+            util.setError(400,error.message);
+            return util.send(res);
+        }
+    }
 
+    static async obtenerPersonas(req, res){
+        try {
+            const personas = await PersonaService.obtenerPersonas();
+            
+            if(personas && personas.length > 0){
+                util.setSuccess(200,'Personas obtenidas',personas);
+            }
+            else{
+                util.setSuccess(200,'No se encuentran Personas'); 
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
+        }
+    }
 
-    } catch (e) {
-        res.status(500).json({
-            mensale: 'todo mal',
-            data: {}
+    static async obtenerPersona(req, res){
+        try {
+            const dni = req.params.dni;
+            const persona = await PersonaService.obtenerPersona(dni);
+            
+            if(persona){
+                util.setSuccess(200,'Persona obtenida',persona);
+            }
+            else{
+                util.setError(404,`Persona con dni: ${dni} no encontrada `);
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
 
-        })
+    static async actualizarPersona(req, res){
+        //preguntar por cambios de dni ? 
+        try {
+            const dni = req.params.dni;
+            const persona = req.body;
+
+            const personaActualizada = await PersonaService.actualizarPersona(dni,persona);
+
+            if(personaActualizada){
+                util.setSuccess(200,'Persona actualizada',personaActualizada);
+            }
+            else{
+                util.setError(404,`Persona con dni: ${dni} no encontrada `);
+            } 
+
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async eliminarPersona(req, res){
+        try {
+            const dni = req.params.dni;
+            const personaEliminada = await PersonaService.eliminarPersona(dni);
+
+            if(personaEliminada){
+                util.setSuccess(200,'Persona eliminada');
+            }
+            else{
+                util.setError(404,`Persona con dni: ${dni} no encontrada `);
+            } 
+
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
     }
 
 }
 
-export async function obtenerPersonas(req, res){
-    try {
-        let personas = await Persona.findAll();
-        if(personas){
-            res.json({
-                data : personas
-            })
-        }
-        
-    } catch (error) {
-        {
-            res.status(500).json({
-                mensaje: error
-            })
-        }
-    }
-}
-
-export async function obtenerPersona(req, res){
-    const dni = req.params.dni;
-
-    try {
-        let persona = await Persona.findByPk(dni);
-
-        if(persona){
-            res.json({
-                data : persona
-            })
-        }
-
-        throw new Error("Persona no encontrada");
-        
-    } catch (error) {
-        {
-            res.status(500).json({
-                mensaje: error.message
-            })
-        }
-    }
-}
-
-
-export async function eliminarPersona(req, res){
-    try {
-        const dni = req.params.dni;
-        console.log(dni);
-        const deleted = await Persona.destroy({
-            where: { dni: dni}
-          });
-        
-        if (deleted){
-            return res.json({
-                mensaje: 'eliminado, todo piola'
-            })
-        }
-        
-        else{
-            throw new Error("Persona no encontrada");
-        }
-
-    } catch (error) {
-        res.status(500).json({
-            mensaje: error.message
-        })
-    }    
-}
-
-export async function actualizarPersona(req, res) {
-    const dni = req.params.dni;
-   
-    try{
-        const [ updated ] = await Persona.update(req.body, {
-            where: { dni: dni }
-          });
-
-        if (updated){
-            const updatedPost = await Persona.findOne({ where: { dni: dni } });
-            return res.json({
-                mensaje: 'actualizado, todo piola',
-                data: updatedPost
-            })
-        }
-        
-        throw new Error("Persona no encontrada");
-    }
-    
-    catch (e) {
-        res.status(500).json({
-            mensale: e.message,
-            data: {}
-
-        })
-    }
-}
+export default PersonaController;

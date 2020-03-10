@@ -1,9 +1,14 @@
 import { Router } from 'express';
 const router = Router();
 
-import { crearJugador} from '../controllers/jugador.controller';
+import JugadorController from '../controllers/jugador.controller';
 
-router.post('/', crearJugador)
+router.post('/',JugadorController.crearJugador);
+router.get('/',JugadorController.obtenerJugadores);
+router.get('/:dni',JugadorController.obtenerJugador);
+router.put('/:dni',JugadorController.actualizarJugador);
+router.delete('/:dni',JugadorController.eliminarJugador);
+
 
 export default router;
 

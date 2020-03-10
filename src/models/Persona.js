@@ -17,6 +17,9 @@ const Persona = sequelize.define('Persona', {
     },
     telefono: {
         type: Sequelize.TEXT
+    },
+    correo: {
+        type: Sequelize.TEXT
     }
 }, {
     timestamps: false,

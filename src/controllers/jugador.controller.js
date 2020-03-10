@@ -1,120 +1,104 @@
-import Jugador from '../models/Jugador';
+import JugadorService from '../services/JugadorService';
+import Util from '../utils/Utils';
 
+const util = new Util();
 
-export async function crearJugador(req, res) {
-    const { dni, legajo, facultad} = req.body;
-    try {
-        let nuevoJugador = await Jugador.create({
-            dni,
-            legajo,
-            facultad
-        })
-        if (nuevoJugador) {
-            res.json({
-                mensaje: 'todo piola',
-                data: nuevoJugador
-            })
+class JugadorController {
+    static async crearJugador(req, res) {    
+        try {    
+            const nuevoJugador = req.body;
+            const jugadorCreado = await JugadorService.agregarJugador(nuevoJugador);
+
+            util.setSuccess(201,'Jugador añadido',jugadorCreado);
+            return util.send(res);
         }
-
-    } catch (e) {
-        res.status(500).json({
-            mensaje: e.message
-        })
+        catch (error){
+            util.setError(400,error.message);
+            return util.send(res);
+        }
     }
 
+    static async obtenerJugador(req, res){
+        try {
+            const dni = req.params.dni;
+            const jugador = await JugadorService.obtenerJugador(dni);
+            
+            if(jugador){
+                util.setSuccess(200,'Jugador obtenido',jugador);
+            }
+            else{
+                util.setError(404,`Jugador con dni: ${dni} no encontrado`);
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async obtenerJugadores(req, res){
+        try {
+            const jugadores = await JugadorService.obtenerJugadores();
+            //console.log("jugadores",jugadores);
+            
+            if(jugadores && jugadores.length > 0){
+                util.setSuccess(200,'Jugadores obtenidos',jugadores);
+            }
+            else{
+                util.setSuccess(200,'No se encuentran Jugadores'); 
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async actualizarJugador(req, res){
+        //preguntar por cambios de dni ? 
+        try {
+            const dni = req.params.dni;
+            const jugador = req.body;
+
+            const jugadorActualizado = await JugadorService.actualizarJugador(dni,jugador);
+
+            if(jugadorActualizado){
+                util.setSuccess(200,'Jugador actualizado',jugadorActualizado);
+            }
+            else{
+                util.setError(404,`Jugador con dni: ${dni} no encontrado `);
+            } 
+
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async eliminarJugador(req, res){
+        try {
+            const dni = req.params.dni;
+            const jugadorEliminado = await JugadorService.eliminarJugador(dni);
+
+            if(jugadorEliminado){
+                util.setSuccess(200,'Jugador eliminada');
+            }
+            else{
+                util.setError(404,`Jugador con dni: ${dni} no encontrado `);
+            } 
+
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
 }
 
-/*export async function obtenerPersonas(req, res){
-    try {
-        let personas = await Persona.findAll();
-        if(personas){
-            res.json({
-                data : personas
-            })
-        }
-        
-    } catch (error) {
-        {
-            res.status(500).json({
-                mensaje: error
-            })
-        }
-    }
-}
 
-export async function obtenerPersona(req, res){
-    const dni = req.params.dni;
-
-    try {
-        let persona = await Persona.findByPk(dni);
-
-        if(persona){
-            res.json({
-                data : persona
-            })
-        }
-
-        throw new Error("Persona no encontrada");
-        
-    } catch (error) {
-        {
-            res.status(500).json({
-                mensaje: error.message
-            })
-        }
-    }
-}
-
-
-export async function eliminarPersona(req, res){
-    try {
-        const dni = req.params.dni;
-        console.log(dni);
-        const deleted = await Persona.destroy({
-            where: { dni: dni}
-          });
-        
-        if (deleted){
-            return res.json({
-                mensaje: 'eliminado, todo piola'
-            })
-        }
-        
-        else{
-            throw new Error("Persona no encontrada");
-        }
-
-    } catch (error) {
-        res.status(500).json({
-            mensaje: error.message
-        })
-    }    
-}
-
-export async function actualizarPersona(req, res) {
-    const dni = req.params.dni;
-   
-    try{
-        const [ updated ] = await Persona.update(req.body, {
-            where: { dni: dni }
-          });
-
-        if (updated){
-            const updatedPost = await Persona.findOne({ where: { dni: dni } });
-            return res.json({
-                mensaje: 'actualizado, todo piola',
-                data: updatedPost
-            })
-        }
-        
-        throw new Error("Persona no encontrada");
-    }
-    
-    catch (e) {
-        res.status(500).json({
-            mensale: e.message,
-            data: {}
-
-        })
-    }
-} */
+export default JugadorController;

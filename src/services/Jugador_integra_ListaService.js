@@ -3,21 +3,41 @@ import Jugador_integra_Lista from '../models/Jugador_integra_Lista';
 import ListaInscripcion from '../models/ListaInscripcion';
 
 class Jugador_integra_ListaService {  
-    static async agregarJugadoresEnLista(id_lista,jugadores) {    
-     // console.log("EL json completo",jugadores.jugadores);
-      var lista = jugadores.jugadores;
-
-      try {
-        for (var i in lista){
-          const jugador = lista[i];
-          const dni = jugador.dni;
-          await Jugador_integra_Lista.create({dni_jugador:dni,id_lista:id_lista});
-        }
-      } 
-      catch (error) {
-        throw error;
+    static async agregarJugadoresEnLista(id_lista,jugadores) {    //recibe una lista de jugadores 
+      const jugadores_lista = [];
+     for (var i in jugadores){
+       const jugador = jugadores[i];
+       const dni = jugador.dni;
+       jugadores_lista.push({dni_jugador:dni,id_lista:id_lista}); //creamos las tuplas (dni_jugador, id_lista);
       }
+
+    try{
+      const operacion = await Jugador_integra_Lista.bulkCreate(jugadores_lista,{returning:true});
+      //anduvo ok! el tema es si las tuplas la armo de este lado o tiene que venir así del front-end
+      return operacion;
     }
+    catch (error){
+      throw new Error(error.message + error.parent.detail);
+    }
+  }
+
+  static async eliminarJugadorEnLista(id_lista, dni_jugador){
+    try {
+      const jugadorEliminado = await Jugador_integra_Lista.destroy({where:{id_lista:id_lista,dni_jugador:dni_jugador}});
+      if(jugadorEliminado){
+        return jugadorEliminado;
+      }
+      else{
+        return null;
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+
+
   
 
 /*    static async obtenerJugador(dni){

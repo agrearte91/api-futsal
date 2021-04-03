@@ -66,7 +66,6 @@ class EquipoController {
     static async actualizarEquipo(req, res){
 
         try {
-            
             const id_equipo = req.params.id;
 
             const equipo = req.body;
@@ -78,6 +77,26 @@ class EquipoController {
             }
             else{
                 util.setError(404,`Equipo no encontrado`);
+            } 
+
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async eliminarEquipo(req, res){
+        try {
+            const id_equipo = req.params.id;
+            const equipoEliminado = await EquipoService.eliminarEquipo(id_equipo);
+
+            if(equipoEliminado){
+                util.setSuccess(200,'Equuipo eliminado');
+            }
+            else{
+                util.setError(404,`Equipo con id_equipo: ${id_equipo} no encontrado `);
             } 
 
             return util.send(res);

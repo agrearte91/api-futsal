@@ -45,7 +45,6 @@ class TorneoService {
     static async obtenerListas(anio_torneo, tipo_torneo){
       try {
         const listas = await ListaInscripcion.findAll({raw: true,where:{anio_torneo:anio_torneo,tipo_torneo:tipo_torneo}});
-        //console.log("Listas asociadas al torneo",anio_torneo,tipo_torneo," son ",listas); 
         return listas;
       } catch (error) {
         throw error;

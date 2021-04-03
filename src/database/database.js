@@ -1,15 +1,17 @@
 import Sequelize from 'sequelize';
 
 export const sequelize = new Sequelize(
-    'Futsal',
-    //'postgres',
+    //'Futsal',
+    'postgres',
     'postgres', //user
-    'postgres', //pass
+    //'postgres', //pass
+    's3a22op827',
+
     {
-        host: '170.210.81.246',
-        //host: 'localhost',
-        port: '30432',
-        //port: '5432',
+        //host: '170.210.81.246',
+        host: 'localhost',
+        //port: '30432',
+        port: '5432',
         dialect: 'postgres',
         pool: {
             max: 3,

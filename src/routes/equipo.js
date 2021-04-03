@@ -9,7 +9,7 @@ router.get('/nombre=:nombre',EquipoController.obtenerEquipo);
 router.get('/:id',EquipoController.obtenerEquipo);
 router.put('/:id',EquipoController.actualizarEquipo);
 
-/*router.delete('/:id',EquipoController.eliminarEquipo); */
+router.delete('/:id',EquipoController.eliminarEquipo); 
 
 export default router;
 

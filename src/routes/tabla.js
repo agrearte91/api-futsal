@@ -6,6 +6,9 @@ import TablaController from '../controllers/tabla.controller';
 router.post('/', TablaController.crearTabla);
 router.get('/:id',TablaController.obtenerTabla);
 router.get('/',TablaController.obtenerTablas);
+
+router.put('/:id/resetear', TablaController.resetearTabla);
+
 router.put('/:id',TablaController.actualizarTabla);
 router.delete('/:id',TablaController.eliminarTabla); 
 

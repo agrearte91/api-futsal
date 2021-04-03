@@ -31,7 +31,8 @@ const Categoria = sequelize.define('Categoria', {
     freezeTableName: true,
 });
 
-Categoria.belongsTo(Tabla,{foreignKey: 'id_tabla', as:'tabla'}); // funciona bien! 
+Categoria.belongsTo(Tabla,{foreignKey: 'id_tabla', as:'tabla'}); // funciona bien! COn torneo no puedo hacer lo mismo (por ahora), porque tiene dos claves primarias.
+
 
 //Categoria.hasMany(ListaInscripcion, {foreignKey: 'id_categoria', as:'listas'});    //está bien (en 'as' poner nombres simples y en minuscula)
 //Lo que hace es llevar id_categoria a ListaInscripción . 

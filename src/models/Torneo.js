@@ -19,6 +19,7 @@ const Torneo = sequelize.define('Torneo', {
     },
     abierto: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false
     }
 
 }, {

@@ -30,7 +30,6 @@ class EquipoService {
 
       static async obtenerEquipoID(id){
         try {
-          console.log("Mostrar",id);
           const equipo = await Equipo.findByPk(id);
           return equipo;
         }
@@ -55,14 +54,14 @@ class EquipoService {
          throw error;
         }
       }
-/*      
-    static async eliminarEquipo(dni){
+      
+    static async eliminarEquipo(id_equipo){
       try {
-        const personaExistente = await Persona.findByPk(dni);
+        const equipoExistente = await Equipo.findByPk(id_equipo);
 
-        if(personaExistente){
-          const personaEliminada = await Persona.destroy({where:{dni:dni}});
-          return personaEliminada; 
+        if(equipoExistente){
+          const equipoEliminado = await Equipo.destroy({where:{id_equipo:id_equipo}});
+          return equipoEliminado; 
         }
         else{
           return null;
@@ -72,8 +71,6 @@ class EquipoService {
         throw error;
       }
     }
-
-  */
 
 } 
 

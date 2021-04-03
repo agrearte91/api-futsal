@@ -8,12 +8,27 @@ class PersonaController {
         try {    
             const nuevaPersona = req.body;
             const personaCreada = await PersonaService.agregarPersona(nuevaPersona);
-
-            util.setSuccess(201,'Persona añadida',personaCreada);
+            
+            util.setSuccess(201,'Persona añadida',personaCreada);            
+            
             return util.send(res);
         }
         catch (error){
             util.setError(400,error.message);
+            return util.send(res);
+        }
+    }
+
+    static async crearPersonas(req, res) {    
+        //Recibe un arreglo objetos Persona para ser creadas, se insertan todas (si no hay error), o ninguna (si hay error)
+        try {    
+            const nuevasPersonas = req.body;
+            const personasCreadas = await PersonaService.agregarPersonas(nuevasPersonas);
+            util.setSuccess(201,'Personas añadidas',personasCreadas);
+            return util.send(res);
+        }
+        catch (error){
+            util.setError(400,"No se añadieron las personas: "+error.message);
             return util.send(res);
         }
     }

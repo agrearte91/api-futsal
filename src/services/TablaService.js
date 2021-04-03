@@ -38,6 +38,17 @@ class TablaService {
       }
     }
 
+    static async resetearTabla(id_tabla){
+      try {
+        const tabla_inicial =  this.actualizarTabla(id_tabla,{"tabla":null});
+
+        return tabla_inicial;
+      }
+      catch (error) {
+        throw error;
+      }
+    }
+
     static async eliminarTabla(id_tabla){
       try {
         const tablaExistente = await Tabla.findByPk(id_tabla);

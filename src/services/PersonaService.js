@@ -9,6 +9,14 @@ class PersonaService {
       }
     }
 
+    static async agregarPersonas(nuevasPersonas){
+      try{
+        return  await Persona.bulkCreate(nuevasPersonas,{returning:true});
+      } catch (error) { 
+        throw new Error (error.parent.detail); //el objeto que provocó el error. No se inserta ningún objeto.
+      }
+  }
+
     static async obtenerPersonas(){
       try {
         return await Persona.findAll();

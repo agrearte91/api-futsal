@@ -1,6 +1,7 @@
 import ListaInscripcionService from '../services/ListaInscripcionService';
 import Util from '../utils/Utils';
 import Jugador_integra_ListaService from '../services/Jugador_integra_ListaService';
+import ListaInscripcion from '../models/ListaInscripcion';
 
 const util = new Util();
 
@@ -16,27 +17,6 @@ class ListaInscripcionController {
         catch (error){
             util.setError(400,error.message);
             return util.send(res);
-        }
-    }
-
-    static async agregarJugadoresEnLista(req,res){
-        try {
-            const id_lista = req.params.id;
-            const lista = await ListaInscripcionService.obtenerListaInscripcion(id_lista);
-            const jugadores = req.body;
-
-            if (lista){
-                await Jugador_integra_ListaService.agregarJugadoresEnLista(id_lista,jugadores);
-                util.setSuccess(201,`Jugadores añadidos a la lista: ${id_lista} `,jugadores);
-            }
-            else{
-                util.setError(404,'No se encuentra lista de Inscripción'); 
-            }
-            return util.send(res);
-
-        } catch (error) {
-            util.setError(400,error.message);   
-            return util.send(res);   
         }
     }
 
@@ -64,7 +44,14 @@ class ListaInscripcionController {
             const listaInscripcion = await ListaInscripcionService.obtenerListaInscripcion(id_lista);
 
             if(listaInscripcion) {
+                /*const equipo = await listaInscripcion.getEquipo();
+                console.log("Información del equipo de la lista: ",equipo.dataValues);
+                
+                const torneo = await ListaInscripcionService.obtenerTorneo(listaInscripcion.anio_torneo,listaInscripcion.tipo_torneo);
+                console.log("Información del torneo de la lista: ",torneo);  */
                 util.setSuccess(200,'ListaInscripcion obtenida',listaInscripcion);
+
+                
             }
             else{
                 util.setError(404,`ListaInscripcion no encontrada`);
@@ -108,6 +95,7 @@ class ListaInscripcionController {
                 util.setSuccess(200,'ListaInscripcion eliminada');
             }
             else{
+                console.log()
                 util.setError(404,`ListaInscripcion no se pudo eliminar`);
             }
             return util.send(res);
@@ -162,7 +150,7 @@ class ListaInscripcionController {
         try {
             const jugadores = await ListaInscripcionService.obtenerJugadores(id_lista);
             if(jugadores){
-                util.setSuccess(200,`Jugadores de la lista: ${id_lista}  obtenidos`,jugadores);
+                util.setSuccess(200,`Jugadores de la lista: '${id_lista}'  obtenidos`,jugadores);
             }
             else{
                 util.setError(404,`Jugadores no encontrados`);
@@ -171,6 +159,59 @@ class ListaInscripcionController {
 
         } catch (error) {
             throw error;
+        }
+    }
+
+    static async agregarJugadoresEnLista(req,res){
+        try {
+            const id_lista = req.params.id;
+            const lista = await ListaInscripcionService.obtenerListaInscripcion(id_lista);
+            const jugadores = req.body;
+
+            if (lista){
+                const operacion = await Jugador_integra_ListaService.agregarJugadoresEnLista(id_lista,jugadores);
+                if (operacion){
+                    util.setSuccess(201,`Jugadores añadidos a la lista: ${id_lista} `,operacion);
+                }
+
+                else{
+                    util.setError(400,'No se pudo completar la operación'); 
+                }
+            }
+            else{
+                util.setError(404,'No se encuentra lista de Inscripción'); 
+            }
+            return util.send(res);
+
+        } catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async eliminarJugadorEnLista(req, res){
+        try {
+            const id_lista = req.params.id;
+            const lista = await ListaInscripcionService.obtenerListaInscripcion(id_lista);
+            const dni_jugador = req.params.dni_jugador;
+
+            if (lista){
+                const operacion = await Jugador_integra_ListaService.eliminarJugadorEnLista(id_lista,dni_jugador);
+                if (operacion){
+                    util.setSuccess(201,`Jugador eliminado de la lista: ${id_lista} `, operacion);
+                }
+                else{
+                    util.setError(400,'No se pudo completar la operación (jugador no se encontraba en la lista)'); 
+                }
+            }
+            else{
+                util.setError(404,'No se encuentra lista de Inscripción'); 
+            }
+            return util.send(res);
+
+        } catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
         }
     }
 }

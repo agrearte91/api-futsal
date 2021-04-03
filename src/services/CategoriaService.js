@@ -3,13 +3,10 @@ import Torneo from '../models/Torneo';
 import Partido from '../models/Partido';
 import Equipo from '../models/Equipo';
 
-import Categoria_contiene_Equipo from '../models/Categoria_contiene_Equipo';
 import Categoria_contiene_EquipoService from './Categoria_contiene_EquipoService';
 import EquipoService from './EquipoService';
 import PartidoService from './PartidoService';
 import TablaService from './TablaService';
-
-
 
 class CategoriaService { 
     static async agregarCategoria(nuevaCategoria) {
@@ -123,7 +120,7 @@ class CategoriaService {
         }
       }
 
-      static async generarTabla(id_categoria){
+      static async generarTablaInicial(id_categoria){
         try {
           const equipos = await Categoria_contiene_EquipoService.obtenerEquipos(id_categoria);
           const tabla = [];
@@ -131,8 +128,8 @@ class CategoriaService {
           if (equipos){
 
             for (var i in equipos){
-              const equipo_categoria = equipos[i];
-              const id_equipo = await equipo_categoria.id_equipo;
+              const equipo_categoria = equipos[i];  //tupla (id_equipo, id_categoria)
+              const id_equipo =  equipo_categoria.id_equipo;
               const equipo = await EquipoService.obtenerEquipoID(id_equipo);
               
               var fila = {
@@ -151,22 +148,14 @@ class CategoriaService {
               tabla.push(fila);
             }
 
-            var tabla2 = {};
-            tabla2.tabla = tabla;
+            var tabla_json = {};
+            tabla_json.tabla = tabla;
 
-            const categoria = await CategoriaService.obtenerCategoria(id_categoria);
+            //const categoria = await CategoriaService.obtenerCategoria(id_categoria);
+            
+            //const tablaActualizada = await TablaService.actualizarTabla(categoria.id_tabla,tabla); 
 
-            const tablaActualizada = await TablaService.actualizarTabla(categoria.id_tabla,tabla); 
-
-            /*console.log("la tabla de la Categoria es ",categoria.id_tabla);
-            //const categoriaActualizada = await CategoriaService.actualizarCategoria(id_categoria,categoria);
-
-            console.log("tabla generada para la categoria",tabla2);
-
-            console.log("Tabla actualizada?", tablaActualizada); */
-
-
-            return tabla2;
+            return tabla_json;
           }
           else{
             return null;
@@ -180,64 +169,38 @@ class CategoriaService {
       static async computarPartido(tabla,partido){
         try {
 
-          //console.log("Tabla", tabla);
-
           const id_equipo_local = partido.id_equipo_local;
           const id_equipo_visitante = partido.id_equipo_visitante;
           
           var goles_local = partido.goles_local;
           var goles_visitante = partido.goles_visitante;
-         
 
           var tablaPuntaje = tabla.tabla;
 
           //console.log("Tabla", tablaPuntaje);
           
           var fila_equipo_local = tablaPuntaje.filter(function (fila) {
-            //console.log(fila);
             return fila.id_equipo == id_equipo_local;
           });
-
-          //console.log("Tabla equipo local", fila_equipo_local);
 
           var fila_equipo_visitante = tablaPuntaje.filter(function(fila){
             return fila.id_equipo == id_equipo_visitante;
           });
 
-          //console.log("Tabla equipo visitante", fila_equipo_visitante);
-
           if(goles_local>goles_visitante){
-            fila_equipo_local[0].puntos =+ 3;
-            fila_equipo_local[0].partidos_ganados =+1;
-
-            fila_equipo_visitante[0].partidos_perdidos =+1;
+            CategoriaService.computarVictoria(fila_equipo_local,fila_equipo_visitante);
           }
           else{
             if(goles_local<goles_visitante){
-              fila_equipo_visitante[0].puntos=+3;
-              fila_equipo_visitante[0].partidos_ganados =+1;
-
-              fila_equipo_local[0].partidos_perdidos =+1;
+              CategoriaService.computarVictoria(fila_equipo_visitante,fila_equipo_local);
             }
             else{
-              fila_equipo_local[0].puntos =+ 1;
-              fila_equipo_visitante[0].puntos=+1;
-              
-              fila_equipo_local[0].partidos_empatados =+1;
-              fila_equipo_visitante[0].partidos_empatados =+1;
+              CategoriaService.computarEmpate(fila_equipo_local,fila_equipo_visitante);
             }
           }
 
-          fila_equipo_local[0].partidos_jugados =+1;
-          fila_equipo_local[0].goles_favor =+ goles_local;
-          fila_equipo_local[0].goles_contra =+ goles_visitante;
-          fila_equipo_local[0].diferencia_goles = fila_equipo_local[0].goles_favor -  fila_equipo_local[0].goles_contra;
-
-          fila_equipo_visitante[0].partidos_jugados =+1;
-          fila_equipo_visitante[0].goles_favor =+ goles_visitante;
-          fila_equipo_visitante[0].goles_contra =+ goles_local;
-          fila_equipo_visitante[0].diferencia_goles = fila_equipo_visitante[0].goles_favor -  fila_equipo_visitante[0].goles_contra;
-
+          CategoriaService.computarJugado_Goles(fila_equipo_local,goles_local,goles_visitante);
+          CategoriaService.computarJugado_Goles(fila_equipo_visitante,goles_visitante,goles_local);
 
 // ------------------------------------------------------------------------------------------------------------
       /*   console.log("Tabla equipo local", fila_equipo_local);
@@ -249,54 +212,80 @@ class CategoriaService {
           console.log("TABLA",tabla);  */ 
 //-------------------------------------------------------------------------------------------------------------
           ///ACÁ TENGO QUE ACTUALIZAR LA TABLA! 
-
+          //console.log(tabla);
+          
           return tabla;
-        
         }
         catch (error) {
           throw error;
         }
       }
 
-      static async computarPartidos(id_categoria,partidosJugados){
-        var tabla = await CategoriaService.obtenerTabla(id_categoria);
 
-        for (var i in partidosJugados){
-          var partidoJugado = partidosJugados[i];
-          const id_partido = partidoJugado.id_partido;
-          
-          const partidoActualizado = await PartidoService.actualizarPartido(id_partido,partidoJugado);
-
-          await tabla.reload();   // chequear esto después
-          tabla = await CategoriaService.computarPartido(tabla,partidoActualizado);
-
-          /* {
-            "id_partido": 7,
-            "nro_fecha": 1,
-            "goles_local": 3,
-            "goles_visitante": 1,
-            "jugado": false,
-            "id_categoria": 8,
-            "id_equipo_local": 12,
-            "id_equipo_visitante": 1,
-            "dni_arbitro": 88888888,
-            "dni_asistente": null
-        } */
-          
-        }
-      
+      static async computarVictoria(equipo1,equipo2){
+        //Victoria del equipo1 sobre el equipo2
+        equipo1[0].puntos += 3;
+        equipo1[0].partidos_ganados +=1;
+        equipo2[0].partidos_perdidos +=1;
       }
 
+      static async computarEmpate(equipo1,equipo2){
+        equipo1[0].puntos += 1;
+        equipo2[0].puntos+=1;
+        equipo1[0].partidos_empatados+=1;
+        equipo2[0].partidos_empatados +=1;
+      }
 
-      static async actualizarTabla(id_categoria){
+      static async computarJugado_Goles(equipo,golesFavor,golesContra){
+        equipo[0].partidos_jugados+=1;
+        equipo[0].goles_favor += golesFavor;
+        equipo[0].goles_contra += golesContra;
+        equipo[0].diferencia_goles = (equipo[0].goles_favor - equipo[0].goles_contra);
+      }
+
+      static async computarPartidosJugados(id_categoria,tabla_inicial){
+
         const partidos = await CategoriaService.obtenerPartidos(id_categoria);
+        var tabla_computada = tabla_inicial;
 
         var partidos_jugados = partidos.filter(function (partido) {
-          //console.log(fila);
-          return partido.jugado == true;
-        });
+          return partido.jugado == true; 
+        }); //obtenemos todos los partidos jugados hasta el momento en la categoría
+
+        for (var i in partidos_jugados){
+          var partidoJugado = partidos_jugados[i];
+          console.log("Iteracion",i);
+          tabla_computada = await CategoriaService.computarPartido(tabla_computada,partidoJugado);
+        }
+
+        return tabla_computada;
+      } 
+
+      static async refrescarTabla(id_categoria){
+        
+        try {
+        const tabla_inicial = await this.generarTablaInicial(id_categoria);  // {"tabla": { ...., .... }}
+
+        const tabla_calculada = await this.computarPartidosJugados(id_categoria,tabla_inicial);
+
+        const categoria = await CategoriaService.obtenerTabla(id_categoria);
+        const id_tabla = categoria.id_tabla;
+
+        const actualizacion_tabla = await TablaService.actualizarTabla(id_tabla,tabla_calculada);
+        
+        return actualizacion_tabla;
+
+        } catch (error) {
+          
+          throw error;
+        }
+         
+        
         
       }
+      
+
+
   } 
 
   export default CategoriaService;

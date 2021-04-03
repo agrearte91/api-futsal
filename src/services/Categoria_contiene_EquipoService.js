@@ -3,82 +3,50 @@ import CategoriaService from './CategoriaService';
 
 
 class Categoria_contiene_EquipoService {
+  static async agregarEquipos(id_categoria,equipos) {    
+    var tuplas = [];
+    
+    for (var i in equipos){
+      const equipo = equipos[i];
+      const id_equipo = equipo.id_equipo;
+      const categ_equipo = {"id_equipo":id_equipo,"id_categoria":id_categoria}; //creamos las tuplas..
+      tuplas.push(categ_equipo);
+    }
+    
+    try{
+      return await Categoria_contiene_Equipo.bulkCreate(tuplas,{returning:true}); //... para insertarlas con método bulkCreate (todas o ninguna)
+    }
+    catch (error) {
+      throw new Error (error.parent.detail); //detecta el objeto que provocó el error, no se inserta ninguno de los objetos.
+    }
+  }
   
-  /* function agregarEquipos2(id_categoria,equipos) {
-    return Promise.all(equipos.map(async (equipo) => {
-        let id_equipo = equipo.id_equipo;
-
-        await Categoria_contiene_Equipo.create({id_equipo:id_equipo,id_categoria:id_categoria});
-    }));
-}
-
-function createObjects(id_categoria,equipos) {
-    return Promise.all(
-        equipos.map(({ Categoria_contiene_Equipo }) => agregarEquipos2(id_categoria,equipos))
-    );
-} */
-
-
-
-    static async agregarEquipos(id_categoria,equipos) {    
-     // console.log("EL json completo",jugadores.jugadores);
-      var lista = equipos.equipos;
+  static async obtenerEquipos(id_categoria){
+    try {
+      const equipos = await Categoria_contiene_Equipo.findAll({raw:true,where:{id_categoria:id_categoria}});
+      return equipos;
+    }
+    catch (error) {
+      throw error;
+    }
+  }
+  
+  static async eliminarEquipo(id_equipo,id_categoria){
       try {
-        for (var i in lista){
-          const equipo = lista[i];
-          const id_equipo = equipo.id_equipo;
-          await Categoria_contiene_Equipo.create({id_equipo:id_equipo,id_categoria:id_categoria});
+        const equipoEnCategoria = await Categoria_contiene_Equipo.findOne({where:{id_equipo:id_equipo,id_categoria:id_categoria}});
+
+        if(equipoEnCategoria){
+          const equipoEliminado = await Categoria_contiene_Equipo.destroy({where:{id_equipo:id_equipo,id_categoria:id_categoria}});
+          return equipoEliminado; 
         }
-      } 
+        else{
+          return null;
+        }
+      }
       catch (error) {
         throw error;
       }
     }
-    
-    static async obtenerEquipos(id_categoria){
-      try {
-        const equipos = await Categoria_contiene_Equipo.findAll({raw:true,where:{id_categoria:id_categoria}});
-
-        return equipos; 
-      }
-       catch (error) {
-         throw error;
-        }
-      }
-    /*
-    static async actualizarJugador(dni,jugador){
-      try {
-        const jugadorExistente = await Jugador.findByPk(dni);
-
-        if(jugadorExistente){
-          await Jugador.update(jugador,{where:{dni:dni}});
-          return jugador; 
-        }
-        else{
-          return null;
-        }
-      }
-       catch (error) {
-         throw error;
-        }
-      }
-      
-    static async eliminarJugador(dni){
-      try {
-        const jugadorExistente = await Jugador.findByPk(dni);
-
-        if(jugadorExistente){
-          const jugadorEliminado = await Jugador.destroy({where:{dni:dni}});
-          return jugadorEliminado; 
-        }
-        else{
-          return null;
-        }
-      }
-      catch (error) {
-        throw error;
-      }
-    } */
 } 
   
   export default Categoria_contiene_EquipoService;

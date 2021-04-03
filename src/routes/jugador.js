@@ -3,11 +3,11 @@ const router = Router();
 
 import JugadorController from '../controllers/jugador.controller';
 
-router.post('/',JugadorController.crearJugador);
-router.get('/',JugadorController.obtenerJugadores);
-router.get('/:dni',JugadorController.obtenerJugador);
-router.put('/:dni',JugadorController.actualizarJugador);
-router.delete('/:dni',JugadorController.eliminarJugador);
+router.post('/',JugadorController.crearJugador); // crea un jugador, de acuerdo a los parámetros pasados en el body
+router.get('/',JugadorController.obtenerJugadores); //obtener todos los jugadores almacenados en la base
+router.get('/:dni',JugadorController.obtenerJugador); //obtener jugador por :dni
+router.put('/:dni',JugadorController.actualizarJugador);  //actualizar los datos del jugador con :dni
+router.delete('/:dni',JugadorController.eliminarJugador); //elimina el jugador de la base
 
 
 export default router;

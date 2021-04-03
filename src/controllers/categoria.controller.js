@@ -4,6 +4,7 @@ import Categoria_contiene_EquipoService from '../services/Categoria_contiene_Equ
 import TablaService from '../services/TablaService';
 import PartidoService from '../services/PartidoService';
 import Categoria from '../models/Categoria';
+import Partido from '../models/Partido';
 
 const util = new Util();
 
@@ -11,7 +12,7 @@ class CategoriaController {
     static async crearCategoria(req, res) {    
         try {    
             const nuevaCategoria = req.body;
-            const nuevaTabla = await TablaService.crearTablaVacia();  //cramos una tabla inicial para la nueva categoria
+            const nuevaTabla = await TablaService.crearTablaVacia();  //creamos una tabla inicial para la nueva categoria
             nuevaCategoria.id_tabla = nuevaTabla.id_tabla;
             
             const categoriaCreada = await CategoriaService.agregarCategoria(nuevaCategoria);
@@ -48,14 +49,14 @@ class CategoriaController {
                 const id_categoria = req.params.id;
                 const categoria = await CategoriaService.obtenerCategoria(id_categoria);
 
-                const tabla = await CategoriaService.generarTabla(id_categoria);
-
+               // const tabla = await CategoriaService.generarTablaInicial(id_categoria); //Genera tabla inicial
 
                 //const partidos = await CategoriaService.obtenerPartidos(id_categoria);
             
             if(categoria){
-                util.setSuccess(200,'Categoria obtenida',tabla);
-                //util.setSuccess(200,'Categoria obtenida',categoria);
+                //util.setSuccess(200,'Categoria obtenida',tabla); //funciona bien
+                
+                util.setSuccess(200,'Categoria obtenida',categoria);
             }
             else{
                 util.setError(404,`Categoria no encontrada`);
@@ -113,6 +114,28 @@ class CategoriaController {
         }
     }
 
+    static async eliminarEquipo(req, res){
+        try {
+            const id_categoria = req.params.id;
+            const id_equipo = req.body.id_equipo;
+            
+            const equipoEliminado = await Categoria_contiene_EquipoService.eliminarEquipo(id_equipo,id_categoria);
+
+            if(equipoEliminado){
+                util.setSuccess(200,`Equipo con id: ${id_equipo} eliminado de la categoría ${id_categoria}`);
+            }
+            else{
+                util.setError(404,`Equipo con id: ${id_equipo} o categoría con id: ${id_categoria} no encontrados`);
+            } 
+
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
+
     static async agregarEquipos(req, res){
         try {
             const id_categoria = req.params.id;
@@ -121,10 +144,13 @@ class CategoriaController {
 
             if(categoria){
                 await Categoria_contiene_EquipoService.agregarEquipos(id_categoria,equipos);
+
+                //const tabla = await CategoriaService.generarTablaInicial(id_categoria); //Genera tabla inicial, después de agregar a los equipos.
+                
                 util.setSuccess(200,`Equipos agregados a la categoria ${id_categoria} `,equipos);
             }
             else{
-                util.setError(404,`Categoria con id: ${dni} no encontrada`);
+                util.setError(404,`Categoria con id: ${id_categoria} no encontrada`);
             } 
 
             return util.send(res);
@@ -163,7 +189,7 @@ class CategoriaController {
 
             if(partidos){
                 if (partidos.length==0){
-                    util.setSuccess(200,`No se registraron partidos en la categoria ${id_categoria}`,partidos);
+                    util.setSuccess(200,`No se registraron partidos en la categoria con id: ${id_categoria}`,partidos);
                 }
                 else{
                     util.setSuccess(200,`Partidos de la categoria ${id_categoria} `, partidos);
@@ -182,9 +208,27 @@ class CategoriaController {
     }
 
 
-    static async obtenerTabla(id_categoria){
-        const tabla = await CategoriaService.obtenerTabla(id_categoria);
-        return tabla;
+    static async obtenerTabla(req,res){
+        try {
+            const id_categoria = req.params.id;
+
+
+            const tabla = await CategoriaService.obtenerTabla(id_categoria);
+
+            //const tablaFicticia = await CategoriaService.generarTablaInicial(id_categoria); //Genera tabla inicial, después de agregar a los equipos
+
+            if(tabla){
+                util.setSuccess(200,`Tabla de la categoria ${id_categoria}`,tabla);
+            }
+            else{
+                util.setError(404,`Tabla de la Categoria id: ${id_categoria} no encontrada`);
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        } 
     }
 
     static async obtenerTorneo(id_categoria){
@@ -192,19 +236,23 @@ class CategoriaController {
         return torneo; 
     }
 
-    static async actualizarTabla(req,res){
+    static async refrescarTabla(req,res){
         try {
             const id_categoria = req.params.id;
-            const tablaActualizada = await CategoriaService.actualizarTabla(id_categoria);
+            const tablaActualizada = await CategoriaService.refrescarTabla(id_categoria);
+            
 
-            if (tablaActualizada){
+            if (tablaActualizada!=null){
                 util.setSuccess(200,`Tabla actualizada con éxito`, tablaActualizada);
             }
             else{
                 util.setError(404,`Tabla no se pudo actualizar`);
             }
+            return util.send(res);
+
         } catch (error) {
-            
+            util.setError(404,error.message);   
+            return util.send(res);   
         }
     }
 
@@ -218,10 +266,10 @@ class CategoriaController {
 
             const tablaActualizada = await CategoriaService.computarPartido(tabla,partido);
 
-            const tablaActualizada2 = TablaService.actualizarTabla(tabla.id_tabla,tablaActualizada);
+            const tablaActualizada2 = await TablaService.actualizarTabla(tabla.id_tabla,tablaActualizada);
 
              if(tablaActualizada2){
-                util.setSuccess(200,`Partido computado con éxito`, tablaActualizada);
+                util.setSuccess(200,`Partido computado con éxito`, tablaActualizada2);
             } 
             
             return util.send(res);
@@ -232,15 +280,14 @@ class CategoriaController {
         }
     }
 
-    static async computarPartidos(req, res){
+    static async actualizarPartidos(req, res){
         try {
-            const id_categoria = req.params.id_categoria;
             const partidos = req.body;
 
-            const cargaPartidos = await CategoriaService.computarPartidos(id_categoria,partidos);
+            const cargaPartidos = await PartidoService.actualizarPartidos(partidos); 
 
             if (cargaPartidos){
-                util.setSuccess(200,`Partidos de la categoría computados con éxito`, cargaPartidos);
+                util.setSuccess(200,`Partidos de la categoría actualizados con éxito`,cargaPartidos);
             }
             else{
                 util.setError(404,`Partidos de la categoría no se pudieron actualizar`);
@@ -251,7 +298,6 @@ class CategoriaController {
             return util.send(res);
         }
     }
-
 }
 
 export default CategoriaController;

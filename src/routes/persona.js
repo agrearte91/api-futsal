@@ -3,11 +3,14 @@ const router = Router();
 
 import PersonaController from '../controllers/persona.controller';
 
-//router.post('/', crearPersona);
-router.post('/',PersonaController.crearPersona);
-router.get('/',PersonaController.obtenerPersonas);
-router.get('/:dni',PersonaController.obtenerPersona);
-router.put('/:dni',PersonaController.actualizarPersona);
-router.delete('/:dni',PersonaController.eliminarPersona);
+router.post('/',PersonaController.crearPersona); // recibe una persona a insertar en la base
+router.post('/crearPersonas',PersonaController.crearPersonas); //recibe un arreglo de personas a insertar en la base
+
+router.get('/',PersonaController.obtenerPersonas); // obtener todas las personas almacenadas hasta el momento
+router.get('/:dni',PersonaController.obtenerPersona); //obtener persona por campo: dni
+
+router.put('/:dni',PersonaController.actualizarPersona); //actualizar los datos de la persona con :dni
+
+router.delete('/:dni',PersonaController.eliminarPersona); //eliminar la persona de la base 
 
 export default router;

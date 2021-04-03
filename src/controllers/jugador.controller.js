@@ -1,5 +1,6 @@
 import JugadorService from '../services/JugadorService';
 import Util from '../utils/Utils';
+import Jugador from '../models/Jugador';
 
 const util = new Util();
 
@@ -37,10 +38,25 @@ class JugadorController {
         }
     }
 
+    static async obtenerJugadorPersona(req,res){
+        try {
+            const dni = req.params.dni;
+            const jugador = await JugadorService.obtenerJugador(dni);
+            if (jugador){
+                const persona = await jugador.getPersona();
+                //console.log("persona obtenida:",persona.dataValues);
+                util.setSuccess(200,'Datos completos del jugador',)
+            }
+
+
+        } catch (error) {
+            
+        }
+    }
+
     static async obtenerJugadores(req, res){
         try {
             const jugadores = await JugadorService.obtenerJugadores();
-            //console.log("jugadores",jugadores);
             
             if(jugadores && jugadores.length > 0){
                 util.setSuccess(200,'Jugadores obtenidos',jugadores);

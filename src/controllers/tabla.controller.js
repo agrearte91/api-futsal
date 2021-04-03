@@ -55,6 +55,20 @@ class TablaController {
         }
     }
 
+    static async resetearTabla(req, res) {    
+        try {    
+            const id_tabla = req.params.id;
+            const tablaCreada = await TablaService.resetearTabla(id_tabla);
+
+            util.setSuccess(201,'Tabla reestablecida', tablaCreada);
+            return util.send(res);
+        }
+        catch (error){
+            util.setError(400,error.message);
+            return util.send(res);
+        }
+    }
+
     static async eliminarTabla(req, res){
         try {
             const id_tabla = req.params.id;

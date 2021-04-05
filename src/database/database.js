@@ -5,7 +5,7 @@ export const sequelize = new Sequelize(
     'postgres',
     'postgres', //user
     //'postgres', //pass
-    's3a22op827',
+    'matias18',
 
     {
         //host: '170.210.81.246',

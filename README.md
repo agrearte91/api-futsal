@@ -204,10 +204,11 @@ Métodos de ruta RECURSO 'Categoría'
 
 ```js 
 router.get('/',CategoriaController.obtenerCategorias);
-
 router.get('/:id',CategoriaController.obtenerCategoria);
+router.get('/:nombre/torneo/:anio/:tipo',CategoriaController.obtenerCategoriaDelTorneo); // ejemplo: anio=2021&tipo="Apertura"
+router.get('/:id/equipos',CategoriaController.obtenerEquipos);
+router.get('/:id/partidos',CategoriaController.obtenerPartidos);
 
-router.get("/:nombre/torneo/:anio/:tipo",CategoriaController.obtenerCategoriaDelTorneo); // ejemplo: anio=2021&tipo="Apertura"
 
 router.post('/', TorneoController.crearTorneo);   //recibe un Torneo a insertar en la base (ATRIBUTO opcional 'abierto' --> false ) 
 ```

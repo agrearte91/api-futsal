@@ -197,3 +197,43 @@ router.put('/:anio&:tipo',TorneoController.actualizarTorneo);
 ```js 
 router.delete('/:anio&:tipo',TorneoController.eliminarTorneo);
 ```
+
+-----------------------------------------------------
+Métodos de ruta RECURSO 'Categoría'
+-----------------------------------------------------
+
+```js 
+router.get('/',CategoriaController.obtenerCategorias);
+
+router.get('/:id',CategoriaController.obtenerCategoria);
+
+router.get("/:nombre/torneo/:anio/:tipo",CategoriaController.obtenerCategoriaDelTorneo); // ejemplo: anio=2021&tipo="Apertura"
+
+router.post('/', TorneoController.crearTorneo);   //recibe un Torneo a insertar en la base (ATRIBUTO opcional 'abierto' --> false ) 
+```
+- req.body =  
+ ```json
+        {
+           "anio": 2021,
+           "tipo": "Apertura",
+           "nombre": "Héroes de Malvinas",
+           "abierto": false
+        }
+ ```
+
+```js 
+router.put('/:anio&:tipo',TorneoController.actualizarTorneo);
+```
+- req.body = 
+```json
+      {
+            "anio": 2021,
+            "tipo": "Apertura",
+            "nombre": "Héroes de la guerra de Malvinas",
+            "abierto": true
+        }
+```
+
+```js 
+router.delete('/:anio&:tipo',TorneoController.eliminarTorneo);
+```

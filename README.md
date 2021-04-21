@@ -315,6 +315,6 @@ router.put('/:id',ListaInscripcionController.actualizarListaInscripcion);
 ```
 
 ```js 
-router.delete('/eliminarJugador/:id&:dni_jugador',ListaInscripcionController.eliminarJugadorEnLista);
+router.delete('/:id/eliminarJugador/:dni_jugador',ListaInscripcionController.eliminarJugadorEnLista);
 router.delete('/:id',ListaInscripcionController.eliminarListaInscripcion);
 ```

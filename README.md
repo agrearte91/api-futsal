@@ -44,10 +44,11 @@ router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arre
        }]
 ```
 
-```js router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni ```
-
-```json
-   # req.body = 
+```js 
+router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni 
+```
+#req.body =
+```json 
       {     "nombre": "Steven",
             "apellido": "Gerrard",
             "fecha_nacimiento": "1985-08-08",
@@ -56,27 +57,32 @@ router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arre
        }
 ```
 
-```js router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base ```
+```js 
+router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base 
+```
 
 -----------------------------------------------------
 Métodos de ruta RECURSO 'Jugador'
 -----------------------------------------------------
+```js
 router.get('/',JugadorController.obtenerJugadores); //obtener todos los jugadores almacenados en la base
 router.get('/:dni',JugadorController.obtenerJugador); //obtener jugador por :dni
 
 router.post('/',JugadorController.crearJugador); // crea un jugador, de acuerdo a los parámetros pasados en el body (La instancia de Persona, debería estar previamente creada)
-    
-    # req.body = 
+```
+#req.body =
+```json
       {
-      "dni": 35187581,
-            "legajo": "122280",
-            "facultad": "Informática"
+           "dni": 35187581,
+           "legajo": "122280",
+           "facultad": "Informática"
        }
-      
-
+```      
+```js
 router.post('/crearJugadores',JugadorController.crearJugadores); // crea un jugador, de acuerdo a los parámetros pasados en el body
-
-    # req.body = 
+```
+#req.body =
+```json
       [ {   "dni": 88888888,
             "legajo": "2984-888888",
             "facultad": null
@@ -88,16 +94,22 @@ router.post('/crearJugadores',JugadorController.crearJugadores); // crea un juga
             "telefono": "29856789",
             "correo": null
        } ]
-      
-router.put('/:dni',JugadorController.actualizarJugador);  //actualizar los datos del jugador con :dni
+```
 
-    # req.body = 
+```js
+router.put('/:dni',JugadorController.actualizarJugador);  //actualizar los datos del jugador con :dni
+```
+#req.body =
+```json
       {
             "legajo": "122280",
             "facultad": "Informática"
        }
+```
 
+```js
 router.delete('/:dni',JugadorController.eliminarJugador); //elimina el jugador de la base
+```
 
 
 

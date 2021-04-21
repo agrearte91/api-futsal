@@ -12,7 +12,7 @@ router.get('/:dni', PersonaController.obtenerPersona);   //obtener persona por c
 
 router.post('/', PersonaController.crearPersona);   //recibe una persona a insertar en la base
 ```
-- #req.body =  
+- req.body =  
  ```json
             {     
                 "dni": 88888888,
@@ -27,7 +27,7 @@ router.post('/', PersonaController.crearPersona);   //recibe una persona a inser
 ```js 
 router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arreglo de personas a insertar en la base
 ```
-#req.body = 
+- req.body = 
 ```json
       [ {   "dni": 88888888,
             "nombre": "Steven",
@@ -48,7 +48,7 @@ router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arre
 ```js 
 router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni 
 ```
-#req.body =
+- req.body =
 ```json 
       {     "nombre": "Steven",
             "apellido": "Gerrard",

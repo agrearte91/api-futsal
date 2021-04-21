@@ -204,37 +204,50 @@ Métodos de ruta RECURSO 'Categoría'
 
 ```js 
 router.get('/',CategoriaController.obtenerCategorias);
+
 router.get('/:id',CategoriaController.obtenerCategoria);
+
 router.get('/:nombre/torneo/:anio/:tipo',CategoriaController.obtenerCategoriaDelTorneo); // ejemplo: anio=2021&tipo="Apertura"
-router.get('/:id/equipos',CategoriaController.obtenerEquipos);
-router.get('/:id/partidos',CategoriaController.obtenerPartidos);
 
+router.get('/:id/equipos',CategoriaController.obtenerEquipos); //obtener todos los equipos que pertenezcan a una categoría
 
-router.post('/', TorneoController.crearTorneo);   //recibe un Torneo a insertar en la base (ATRIBUTO opcional 'abierto' --> false ) 
+router.get('/:id/partidos',CategoriaController.obtenerPartidos); //obtener todos los partidos de una categoría
+
+router.get('/:id/tabla',CategoriaController.obtenerTabla); //obtener el objeto Tabla, correspondiente a una categoría
+
+router.get('/:id/refrescarTabla', CategoriaController.refrescarTabla);  //refrescar (recalcula partidos jugados) y retorna la tabla de posiciones
+
+router.post('/', CategoriaController.crearCategoria);   //recibe una Categoría a insertar en la base (Requiere, torneo previamente creado)
 ```
 - req.body =  
  ```json
-        {
-           "anio": 2021,
-           "tipo": "Apertura",
-           "nombre": "Héroes de Malvinas",
-           "abierto": false
+         {
+            "nombre": "B",
+            "tipo": "Masculino",
+            "anio_torneo": 2020,
+            "tipo_torneo": "Apertura",
         }
  ```
 
 ```js 
-router.put('/:anio&:tipo',TorneoController.actualizarTorneo);
-```
-- req.body = 
-```json
-      {
-            "anio": 2021,
-            "tipo": "Apertura",
-            "nombre": "Héroes de la guerra de Malvinas",
-            "abierto": true
-        }
+router.post('/:id/agregarEquipos',CategoriaController.agregarEquipos); //agrego todos los equipos
 ```
 
 ```js 
-router.delete('/:anio&:tipo',TorneoController.eliminarTorneo);
+router.put('/:id/actualizarPartidos', CategoriaController.actualizarPartidos); // se juegan partidos y se debe actualizar los registros Partido
+```
+- req.body = (Por ejemplo, partidos de la categoría 14)
+```json
+      {
+            "id_partido": 27,
+            "goles_local": 2,
+            "goles_visitante": 2,
+            "jugado": true
+        },
+        {
+            "id_partido": 28,
+            "goles_local": 2,
+            "goles_visitante": 1,
+            "jugado": true
+        },
 ```

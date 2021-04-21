@@ -4,10 +4,12 @@ Api Futsal Uncoma
 -----------------------------------------------------
 Métodos de ruta RECURSO 'Persona'
 -----------------------------------------------------
-router.get('/', PersonaController.obtenerPersonas);      *//obtener todas las personas almacenadas hasta el momento*
-router.get('/:dni', PersonaController.obtenerPersona);   *//obtener persona por campo: dni*
+**router.get('/', PersonaController.obtenerPersonas);**     *//obtener todas las personas almacenadas hasta el momento*
 
-router.post('/', PersonaController.crearPersona); // recibe una persona a insertar en la base
+**router.get('/:dni', PersonaController.obtenerPersona);**   *//obtener persona por campo: dni*
+
+**router.post('/', PersonaController.crearPersona);**   *//recibe una persona a insertar en la base*
+
 
     # req.body = 
       {     "dni": 88888888,

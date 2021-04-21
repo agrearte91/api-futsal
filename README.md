@@ -10,8 +10,7 @@ router.get('/', PersonaController.obtenerPersonas);     //obtener todas las pers
 router.get('/:dni', PersonaController.obtenerPersona);   //obtener persona por campo: dni
 
 router.post('/', PersonaController.crearPersona);   //recibe una persona a insertar en la base
-```
-    #req.body =  
+```#req.body =  
 ```json
             {     
                 "dni": 88888888,

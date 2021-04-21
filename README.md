@@ -71,7 +71,7 @@ router.get('/:dni',JugadorController.obtenerJugador); //obtener jugador por :dni
 
 router.post('/',JugadorController.crearJugador); // crea un jugador, de acuerdo a los parámetros pasados en el body (La instancia de Persona, debería estar previamente creada)
 ```
-#req.body =
+- req.body =
 ```json
       {
            "dni": 35187581,
@@ -82,7 +82,7 @@ router.post('/',JugadorController.crearJugador); // crea un jugador, de acuerdo 
 ```js
 router.post('/crearJugadores',JugadorController.crearJugadores); // crea un jugador, de acuerdo a los parámetros pasados en el body
 ```
-#req.body =
+- req.body =
 ```json
       [ {   "dni": 88888888,
             "legajo": "2984-888888",
@@ -100,7 +100,7 @@ router.post('/crearJugadores',JugadorController.crearJugadores); // crea un juga
 ```js
 router.put('/:dni',JugadorController.actualizarJugador);  //actualizar los datos del jugador con :dni
 ```
-#req.body =
+- req.body =
 ```json
       {
             "legajo": "122280",
@@ -123,7 +123,7 @@ router.get('/:id',EquipoController.obtenerEquipo);
 
 router.post('/',EquipoController.crearEquipo);   //recibe un equipo a insertar en la base
 ```
-#req.body =  
+- req.body =  
  ```json
             {     
                 "nombre": "Proyecto de Equipo",
@@ -133,7 +133,7 @@ router.post('/',EquipoController.crearEquipo);   //recibe un equipo a insertar e
 ```js 
 router.post('/crearEquipos',EquipoController.crearEquipos); //recibe un arreglo de Equipos a insertar en la base
 ```
-#req.body = 
+- req.body = 
 ```json
       [{     
             "nombre": "Stark Ladys"
@@ -147,7 +147,7 @@ router.post('/crearEquipos',EquipoController.crearEquipos); //recibe un arreglo 
 ```js 
 router.put('/:id',EquipoController.actualizarEquipo); //actualizar los datos
 ```
-#req.body =
+- req.body =
 ```json 
       {     
       "nombre": "Stark Ladys II",
@@ -171,7 +171,7 @@ router.get('/listas/:anio&:tipo',TorneoController.obtenerListas);
 
 router.post('/', TorneoController.crearTorneo);   //recibe un Torneo a insertar en la base (ATRIBUTO opcional 'abierto' --> false ) 
 ```
-#req.body =  
+- req.body =  
  ```json
         {
            "anio": 2021,
@@ -184,7 +184,7 @@ router.post('/', TorneoController.crearTorneo);   //recibe un Torneo a insertar 
 ```js 
 router.put('/:anio&:tipo',TorneoController.actualizarTorneo);
 ```
-#req.body = 
+- req.body = 
 ```json
       {
             "anio": 2021,

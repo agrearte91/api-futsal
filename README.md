@@ -115,5 +115,48 @@ router.delete('/:dni',JugadorController.eliminarJugador); //elimina el jugador d
 Métodos de ruta RECURSO 'Equipo'
 -----------------------------------------------------
 
+```js 
+router.get('/',EquipoController.obtenerEquipos); 
 
+router.get('/:id',EquipoController.obtenerEquipo);
+
+router.post('/',EquipoController.crearEquipo);   //recibe un equipo a insertar en la base
+```
+#req.body =  
+ ```json
+            {     
+                "nombre": "Proyecto de Equipo",
+            }
+ ```
+
+```js 
+router.post('/crearEquipos',EquipoController.crearEquipos); //recibe un arreglo de Equipos a insertar en la base
+```
+#req.body = 
+```json
+      [{     
+            "nombre": "Stark Ladys"
+        },
+        {
+            "nombre": "Mufasas"
+        }
+      ]
+```
+
+```js 
+router.put('/:id',EquipoController.actualizarEquipo); //actualizar los datos
+```
+#req.body =
+```json 
+      {     "nombre": "Stark Ladys II",
+       }
+```
+
+```js 
+router.delete('/:id',EquipoController.eliminarEquipo); 
+```
+
+-----------------------------------------------------
+Métodos de ruta RECURSO 'Torneo'
+-----------------------------------------------------
 

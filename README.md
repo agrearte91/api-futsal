@@ -7,13 +7,12 @@ Métodos de ruta RECURSO 'Persona'
 ```js 
 router.get('/', PersonaController.obtenerPersonas);     //obtener todas las personas almacenadas hasta el momento
 
-router.**get**('/:dni', PersonaController.obtenerPersona);   *//obtener persona por campo: dni*
+router.get('/:dni', PersonaController.obtenerPersona);   //obtener persona por campo: dni
 
-router.**post**('/', PersonaController.crearPersona);   *//recibe una persona a insertar en la base* 
+router.post('/', PersonaController.crearPersona);   //recibe una persona a insertar en la base
 ```
 #req.body =  
 ```json
-
     {     
             "dni": 88888888,
             "nombre": "Steven",
@@ -24,11 +23,12 @@ router.**post**('/', PersonaController.crearPersona);   *//recibe una persona a 
        }
 ```
 
-
+```js 
 router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arreglo de personas a insertar en la base
-
-    # req.body = 
-      [ {     "dni": 88888888,
+```
+#req.body = 
+```json
+      [ {   "dni": 88888888,
             "nombre": "Steven",
             "apellido": "Gerrard",
             "fecha_nacimiento": "1985-08-08",
@@ -42,10 +42,12 @@ router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arre
             "telefono": "29856789",
             "correo": null
        }]
+```
 
 router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni
 
-    # req.body = 
+```js
+   # req.body = 
       {     "nombre": "Steven",
             "apellido": "Gerrard",
             "fecha_nacimiento": "1985-08-08",

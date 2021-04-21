@@ -111,5 +111,9 @@ router.put('/:dni',JugadorController.actualizarJugador);  //actualizar los datos
 router.delete('/:dni',JugadorController.eliminarJugador); //elimina el jugador de la base
 ```
 
+-----------------------------------------------------
+Métodos de ruta RECURSO 'Equipo'
+-----------------------------------------------------
+
 
 

@@ -281,43 +281,40 @@ router.post('/', ListaInscripcionController.crearListaInscripcion);
             "dni_capitan": 35597804,
             "dni_delegado": 35889238,
             "dni_subdelegado": null
-        },
+        }
  ```
 
 ```js 
-router.post('/agregarJugadores/:id',ListaInscripcionController.agregarJugadoresEnLista); //recibe una lista de jugadores para insertar en lista :id
+router.post('/agregarJugadores/:id',ListaInscripcionController.agregarJugadoresEnLista); //recibe una lista de jugadores (dni) para insertar en lista :id
 ```
 - req.body = 
 ```json
-      [ {   "dni": 88888888,
-            "nombre": "Steven",
-            "apellido": "Gerrard",
-            "fecha_nacimiento": "1985-08-08",
-            "telefono": "2984-888888",
-            "correo": null
-       }, 
-       {    "dni": 22222222,
-            "nombre": "Rolando",
-            "apellido": "Schiavi",
-            "fecha_nacimiento": "1979-08-08",
-            "telefono": "29856789",
-            "correo": null
-       }]
+       [
+        {
+            "dni_jugador": 35889238
+        },
+        {
+            "dni_jugador": 88888888
+        }
+    ]
 ```
 
 ```js 
-router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni 
+router.put('/:id',ListaInscripcionController.actualizarListaInscripcion);
 ```
 - req.body =
 ```json 
-      {     "nombre": "Steven",
-            "apellido": "Gerrard",
-            "fecha_nacimiento": "1985-08-08",
-            "telefono": "2984-888888",
-            "correo": "stteven_gerrard8@gmail.com"
-       }
+      {
+            "nombre": null,
+            "descripcion": null,
+            "id_equipo": 1,
+            "dni_capitan": 35597804,
+            "dni_delegado": 35889238,
+            "dni_subdelegado": "12345678"
+        }
 ```
 
 ```js 
-router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base 
+router.delete('/eliminarJugador/:id&:dni_jugador',ListaInscripcionController.eliminarJugadorEnLista);
+router.delete('/:id',ListaInscripcionController.eliminarListaInscripcion);
 ```

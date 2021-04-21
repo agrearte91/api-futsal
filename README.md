@@ -251,3 +251,9 @@ router.put('/:id/actualizarPartidos', CategoriaController.actualizarPartidos); /
             "jugado": true
         },
 ```
+
+```js 
+router.delete('/:id',CategoriaController.eliminarCategoria); 
+
+router.delete('/:id/EliminarEquipo/:id_equipo',CategoriaController.eliminarEquipo); 
+```

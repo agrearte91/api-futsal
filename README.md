@@ -1,10 +1,9 @@
 # api-futsal
 Api Futsal Uncoma
 
-########################################################################################
-
+-----------------------------------------------------
 Métodos de ruta RECURSO 'Persona'
-
+-----------------------------------------------------
 router.get('/', PersonaController.obtenerPersonas);      // obtener todas las personas almacenadas hasta el momento
 router.get('/:dni', PersonaController.obtenerPersona);   //obtener persona por campo: dni
 
@@ -49,10 +48,9 @@ router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos
 
 router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base
 
-########################################################################################
-
+-----------------------------------------------------
 Métodos de ruta RECURSO 'Jugador'
-
+-----------------------------------------------------
 router.get('/',JugadorController.obtenerJugadores); //obtener todos los jugadores almacenados en la base
 router.get('/:dni',JugadorController.obtenerJugador); //obtener jugador por :dni
 

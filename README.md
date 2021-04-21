@@ -148,8 +148,9 @@ router.put('/:id',EquipoController.actualizarEquipo); //actualizar los datos
 ```
 #req.body =
 ```json 
-      {     "nombre": "Stark Ladys II",
-       }
+      {     
+      "nombre": "Stark Ladys II",
+      }
 ```
 
 ```js 
@@ -160,3 +161,38 @@ router.delete('/:id',EquipoController.eliminarEquipo);
 Métodos de ruta RECURSO 'Torneo'
 -----------------------------------------------------
 
+```js 
+router.get('/:anio&:tipo',TorneoController.obtenerTorneo);
+
+router.get('/',TorneoController.obtenerTorneos);
+
+router.get('/listas/:anio&:tipo',TorneoController.obtenerListas);
+
+router.post('/', TorneoController.crearTorneo);   //recibe un Torneo a insertar en la base (ATRIBUTO opcional 'abierto' --> false ) 
+```
+#req.body =  
+ ```json
+        {
+           "anio": 2021,
+           "tipo": "Apertura",
+           "nombre": "Héroes de Malvinas",
+           "abierto": false
+        }
+ ```
+
+```js 
+router.put('/:anio&:tipo',TorneoController.actualizarTorneo);
+```
+#req.body = 
+```json
+      {
+            "anio": 2021,
+            "tipo": "Apertura",
+            "nombre": "Héroes de la guerra de Malvinas",
+            "abierto": true
+        }
+```
+
+```js 
+router.delete('/:anio&:tipo',TorneoController.eliminarTorneo);
+```

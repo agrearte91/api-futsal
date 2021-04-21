@@ -257,3 +257,67 @@ router.delete('/:id',CategoriaController.eliminarCategoria);
 
 router.delete('/:id/EliminarEquipo/:id_equipo',CategoriaController.eliminarEquipo); 
 ```
+-----------------------------------------------------
+Métodos de ruta RECURSO 'ListaInscripcion'
+-----------------------------------------------------
+
+ ```js 
+router.get('/',ListaInscripcionController.obtenerListasInscripcion);
+
+router.get('/:id',ListaInscripcionController.obtenerListaInscripcion);
+
+router.get('/jugadoresListados/:id',ListaInscripcionController.obtenerJugadores); //obtener los jugadores listados pertenecientes a una Lista
+
+router.post('/', ListaInscripcionController.crearListaInscripcion);
+```
+- req.body =  (atributos opcionales: "nombre","descripción","dni_subdelegado");
+ ```json
+            {
+            "nombre": null,
+            "descripcion": null,
+            "id_equipo": 1,
+            "anio_torneo": 2020,
+            "tipo_torneo": "Apertura",
+            "dni_capitan": 35597804,
+            "dni_delegado": 35889238,
+            "dni_subdelegado": null
+        },
+ ```
+
+```js 
+router.post('/agregarJugadores/:id',ListaInscripcionController.agregarJugadoresEnLista); //recibe una lista de jugadores para insertar en lista :id
+```
+- req.body = 
+```json
+      [ {   "dni": 88888888,
+            "nombre": "Steven",
+            "apellido": "Gerrard",
+            "fecha_nacimiento": "1985-08-08",
+            "telefono": "2984-888888",
+            "correo": null
+       }, 
+       {    "dni": 22222222,
+            "nombre": "Rolando",
+            "apellido": "Schiavi",
+            "fecha_nacimiento": "1979-08-08",
+            "telefono": "29856789",
+            "correo": null
+       }]
+```
+
+```js 
+router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni 
+```
+- req.body =
+```json 
+      {     "nombre": "Steven",
+            "apellido": "Gerrard",
+            "fecha_nacimiento": "1985-08-08",
+            "telefono": "2984-888888",
+            "correo": "stteven_gerrard8@gmail.com"
+       }
+```
+
+```js 
+router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base 
+```

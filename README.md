@@ -44,9 +44,9 @@ router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arre
        }]
 ```
 
-router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni
+```js router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos ( de la persona con :dni ```
 
-```js
+```json
    # req.body = 
       {     "nombre": "Steven",
             "apellido": "Gerrard",
@@ -54,8 +54,9 @@ router.put('/:dni', PersonaController.actualizarPersona); //actualizar los datos
             "telefono": "2984-888888",
             "correo": "stteven_gerrard8@gmail.com"
        }
+```
 
-router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base
+```js router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona de la base ```
 
 -----------------------------------------------------
 Métodos de ruta RECURSO 'Jugador'

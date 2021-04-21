@@ -53,10 +53,43 @@ router.delete('/:dni', PersonaController.eliminarPersona); //eliminar la persona
 
 Métodos de ruta RECURSO 'Jugador'
 
-router.post('/', JugadorController.crearJugador); // crea un jugador, de acuerdo a los parámetros pasados en el body
-
-router.get('/', JugadorController.obtenerJugadores); //obtener todos los jugadores almacenados en la base
+router.get('/',JugadorController.obtenerJugadores); //obtener todos los jugadores almacenados en la base
 router.get('/:dni',JugadorController.obtenerJugador); //obtener jugador por :dni
+
+router.post('/',JugadorController.crearJugador); // crea un jugador, de acuerdo a los parámetros pasados en el body (La instancia de Persona, debería estar previamente creada)
+    
+    # req.body = 
+      {
+      "dni": 35187581,
+            "legajo": "122280",
+            "facultad": "Informática"
+       }
+      
+
+router.post('/crearJugadores',JugadorController.crearJugadores); // crea un jugador, de acuerdo a los parámetros pasados en el body
+
+    # req.body = 
+      [ {   "dni": 88888888,
+            "legajo": "2984-888888",
+            "facultad": null
+       }, 
+       {    "dni": 22222222,
+            "nombre": "Rolando",
+            "apellido": "Schiavi",
+            "fecha_nacimiento": "1979-08-08",
+            "telefono": "29856789",
+            "correo": null
+       } ]
+      
 router.put('/:dni',JugadorController.actualizarJugador);  //actualizar los datos del jugador con :dni
+
+    # req.body = 
+      {
+            "legajo": "122280",
+            "facultad": "Informática"
+       }
+
 router.delete('/:dni',JugadorController.eliminarJugador); //elimina el jugador de la base
+
+########################################################################################
 

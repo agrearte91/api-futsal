@@ -6,19 +6,38 @@ Métodos de ruta RECURSO 'Persona'
 -----------------------------------------------------
 router.**get**('/', PersonaController.obtenerPersonas);     *//obtener todas las personas almacenadas hasta el momento*
 
+```json
+{
+    "one": 2,
+    "three": {
+        "point_1": "point_2",
+        "point_3": 3.4
+    },
+    "list": [
+        "one",
+        "two",
+        "three"
+    ]
+}
+```
+
 router.**get**('/:dni', PersonaController.obtenerPersona);   *//obtener persona por campo: dni*
 
 router.**post**('/', PersonaController.crearPersona);   *//recibe una persona a insertar en la base*
 
-
-    # req.body = 
-      {     "dni": 88888888,
+     req.body =
+    
+```json
+    {     
+            "dni": 88888888,
             "nombre": "Steven",
             "apellido": "Gerrard",
             "fecha_nacimiento": "1985-08-08",
             "telefono": "2984-888888",
             "correo": null
        }
+```
+
 
 router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arreglo de personas a insertar en la base
 

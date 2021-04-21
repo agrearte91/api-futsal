@@ -11,17 +11,17 @@ router.get('/:dni', PersonaController.obtenerPersona);   //obtener persona por c
 
 router.post('/', PersonaController.crearPersona);   //recibe una persona a insertar en la base
 ```
-#req.body =  
-```json
-    {     
-            "dni": 88888888,
-            "nombre": "Steven",
-            "apellido": "Gerrard",
-            "fecha_nacimiento": "1985-08-08",
-            "telefono": "2984-888888",
-            "correo": null
-       }
-```
+    #req.body =  
+        ```json
+            {     
+                "dni": 88888888,
+                "nombre": "Steven",
+                "apellido": "Gerrard",
+                "fecha_nacimiento": "1985-08-08",
+                "telefono": "2984-888888",
+                "correo": null
+             }
+        ```
 
 ```js 
 router.post('/crearPersonas', PersonaController.crearPersonas); //recibe un arreglo de personas a insertar en la base

@@ -12,6 +12,7 @@ Métodos de ruta RECURSO 'Persona'
 
 
     # req.body = 
+      ```yaml
       {     "dni": 88888888,
             "nombre": "Steven",
             "apellido": "Gerrard",

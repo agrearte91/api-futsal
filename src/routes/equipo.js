@@ -3,10 +3,13 @@ const router = Router();
 
 import EquipoController from '../controllers/equipo.controller';
 
-router.post('/',EquipoController.crearEquipo);
 router.get('/',EquipoController.obtenerEquipos);
-router.get('/nombre=:nombre',EquipoController.obtenerEquipo);
+//router.get('/nombre=:nombre',EquipoController.obtenerEquipo);
 router.get('/:id',EquipoController.obtenerEquipo);
+
+router.post('/',EquipoController.crearEquipo);
+router.post('/crearEquipos',EquipoController.crearEquipos);
+
 router.put('/:id',EquipoController.actualizarEquipo);
 
 router.delete('/:id',EquipoController.eliminarEquipo); 

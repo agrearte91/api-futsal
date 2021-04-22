@@ -9,6 +9,14 @@ class EquipoService {
       }
     }
 
+    static async agregarEquipos(nuevosEquipos){
+      try{
+        return  await Equipo.bulkCreate(nuevosEquipos,{returning:true});
+      } catch (error) { 
+        throw new Error (error.parent.detail); //el objeto que provocó el error. No se inserta ningún objeto.
+      }
+  }
+
     static async obtenerEquipos(){
       try {
         return await Equipo.findAll();

@@ -26,6 +26,28 @@ class CategoriaController {
         }
     }
 
+    static async obtenerCategoriaDelTorneo(req,res) {
+        try {
+            const nombre_categoria = req.params.nombre;
+            const anio_torneo = req.params.anio;
+            const tipo_torneo = req.params.tipo;
+
+            const categoria = await CategoriaService.obtenerCategoriaDelTorneo(nombre_categoria,anio_torneo,tipo_torneo);
+            
+            if(categoria){
+                util.setSuccess(200,'Categoria obtenidas',categoria);
+            }
+            else{
+                util.setSuccess(200,'No se encuentran Categoría'); 
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
+        }
+    }
+
     static async obtenerCategorias(req, res){
         try {
             const categorias = await CategoriaService.obtenerCategorias();
@@ -117,7 +139,7 @@ class CategoriaController {
     static async eliminarEquipo(req, res){
         try {
             const id_categoria = req.params.id;
-            const id_equipo = req.body.id_equipo;
+            const id_equipo = req.params.id_equipo;
             
             const equipoEliminado = await Categoria_contiene_EquipoService.eliminarEquipo(id_equipo,id_categoria);
 

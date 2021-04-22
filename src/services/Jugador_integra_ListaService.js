@@ -7,7 +7,7 @@ class Jugador_integra_ListaService {
       const jugadores_lista = [];
      for (var i in jugadores){
        const jugador = jugadores[i];
-       const dni = jugador.dni;
+       const dni = jugador.dni_jugador;
        jugadores_lista.push({dni_jugador:dni,id_lista:id_lista}); //creamos las tuplas (dni_jugador, id_lista);
       }
 

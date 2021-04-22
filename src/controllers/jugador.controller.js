@@ -19,6 +19,20 @@ class JugadorController {
         }
     }
 
+    static async crearJugadores(req, res) {    
+        //Recibe un arreglo objetos JUGADOR para ser creados, se insertan todas (si no hay error), o ninguno (si hay error)
+        try {    
+            const nuevosJugadores = req.body;
+            const jugadoresCreados = await JugadorService.agregarJugadores(nuevosJugadores);
+            util.setSuccess(201,'Jugadores añadidos',jugadoresCreados);
+            return util.send(res);
+        }
+        catch (error){
+            util.setError(400,"No se añadieron los jugadores: "+error.message);
+            return util.send(res);
+        }
+    }
+
     static async obtenerJugador(req, res){
         try {
             const dni = req.params.dni;

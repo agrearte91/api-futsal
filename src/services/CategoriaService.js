@@ -30,6 +30,24 @@ class CategoriaService {
       try {
         const categoria = await Categoria.findByPk(id_categoria);
         //CategoriaService.obtenerTorneo(categoria.id_categoria);
+        if(categoria==null){
+          return null;
+        }
+        return categoria.dataValues;
+      }
+      catch (error) {
+        throw error;
+      }
+    }
+
+    static async obtenerCategoriaDelTorneo(nombre_categoria, anio_torneo, tipo_torneo){
+      try {
+        const anio_torneo2 = parseInt(anio_torneo);
+        const categoria = await Categoria.findOne({where:{nombre:nombre_categoria,anio_torneo:anio_torneo2,tipo_torneo:tipo_torneo}});
+        //console.log("La categoria es:",categoria);
+        if(categoria==null){
+          return null;
+        }
         return categoria.dataValues;
       }
       catch (error) {

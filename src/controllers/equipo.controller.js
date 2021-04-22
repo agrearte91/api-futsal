@@ -18,6 +18,20 @@ class EquipoController {
         }
     }
 
+    static async crearEquipos(req, res) {    
+        //Recibe un arreglo objetos Equipo para ser creados, se insertan todos (si no hay error), o ninguno (si hay error)
+        try {    
+            const nuevosEquipos = req.body;
+            const equiposCreados = await EquipoService.agregarEquipos(nuevosEquipos);
+            util.setSuccess(201,'Equipos añadidos',equiposCreados);
+            return util.send(res);
+        }
+        catch (error){
+            util.setError(400,"No se añadieron los equipos: "+error.message);
+            return util.send(res);
+        }
+    }
+
     static async obtenerEquipos(req, res){
         try {
             const Equipos = await EquipoService.obtenerEquipos();

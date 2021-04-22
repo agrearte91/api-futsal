@@ -10,6 +10,14 @@ class JugadorService {
       }
     }
 
+  static async agregarJugadores(nuevosJugadores){
+      try{
+        return await Jugador.bulkCreate(nuevosJugadores,{returning:true});
+      } catch (error) { 
+        throw new Error (error.parent.detail); //el objeto que provocó el error. No se inserta ningún objeto.
+      }
+  }
+
     static async obtenerJugadores(){
       try {
         return await Jugador.findAll({

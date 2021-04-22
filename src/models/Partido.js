@@ -36,6 +36,9 @@ const Partido = sequelize.define('Partido', {
     },
     dni_asistente: {
         type: Sequelize.INTEGER
+    },
+    hora: {
+        type: Sequelize.TIME
     }
 }, {
     timestamps: false,

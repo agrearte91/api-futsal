@@ -318,3 +318,22 @@ router.put('/:id',ListaInscripcionController.actualizarListaInscripcion);
 router.delete('/:id/eliminarJugador/:dni_jugador',ListaInscripcionController.eliminarJugadorEnLista);
 router.delete('/:id',ListaInscripcionController.eliminarListaInscripcion);
 ```
+
+-----------------------------------------------------
+Métodos de ruta RECURSO 'Tabla'
+-----------------------------------------------------
+
+ ```js 
+router.post('/', TablaController.crearTabla);
+
+router.get('/:id',TablaController.obtenerTabla);
+
+router.get('/',TablaController.obtenerTablas);
+
+router.put('/:id/resetear', TablaController.resetearTabla); //establece la tabla a null
+
+router.put('/:id',TablaController.actualizarTabla);
+
+router.delete('/:id',TablaController.eliminarTabla); 
+```
+

@@ -82,8 +82,6 @@ class ListaInscripcionService {
           
           if (lista){
             const jugadores = await Jugador_integra_Lista.findAll({raw:true,where:{id_lista:id_lista}});
-            //console.log("Jugadores de la lista", jugadores);
-
             return jugadores;
           }
         } 

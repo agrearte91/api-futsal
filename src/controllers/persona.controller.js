@@ -60,7 +60,7 @@ class PersonaController {
                 util.setSuccess(200,'Persona obtenida',persona);
             }
             else{
-                util.setError(404,`Persona con dni: ${dni} no encontrada `);
+                util.setSuccess(200,`Persona con dni: ${dni} no encontrada `);
             }
             return util.send(res);
         } 
@@ -70,8 +70,7 @@ class PersonaController {
         }
     }
 
-    static async actualizarPersona(req, res){
-        //preguntar por cambios de dni ? 
+    static async actualizarPersona(req, res){ 
         try {
             const dni = req.params.dni;
             const persona = req.body;
@@ -82,7 +81,7 @@ class PersonaController {
                 util.setSuccess(200,'Persona actualizada',personaActualizada);
             }
             else{
-                util.setError(404,`Persona con dni: ${dni} no encontrada `);
+                util.setSuccess(200,`Persona con dni: ${dni} no encontrada `);
             } 
 
             return util.send(res);
@@ -102,7 +101,7 @@ class PersonaController {
                 util.setSuccess(200,'Persona eliminada');
             }
             else{
-                util.setError(404,`Persona con dni: ${dni} no encontrada `);
+                util.setSuccess(200,`Persona con dni: ${dni} no encontrada `);
             } 
 
             return util.send(res);

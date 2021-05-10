@@ -1,11 +1,10 @@
 import Categoria from '../models/Categoria';
 import Torneo from '../models/Torneo';
 import Partido from '../models/Partido';
-import Equipo from '../models/Equipo';
+import Jugador_convierte_Partido from '../models/Jugador_convierte_Partido';
 
 import Categoria_contiene_EquipoService from './Categoria_contiene_EquipoService';
 import EquipoService from './EquipoService';
-import PartidoService from './PartidoService';
 import TablaService from './TablaService';
 
 class CategoriaService { 
@@ -29,7 +28,7 @@ class CategoriaService {
     static async obtenerCategoria(id_categoria){
       try {
         const categoria = await Categoria.findByPk(id_categoria);
-        //CategoriaService.obtenerTorneo(categoria.id_categoria);
+        
         if(categoria==null){
           return null;
         }
@@ -44,7 +43,6 @@ class CategoriaService {
       try {
         const anio_torneo2 = parseInt(anio_torneo);
         const categoria = await Categoria.findOne({where:{nombre:nombre_categoria,anio_torneo:anio_torneo2,tipo_torneo:tipo_torneo}});
-        //console.log("La categoria es:",categoria);
         if(categoria==null){
           return null;
         }
@@ -194,8 +192,6 @@ class CategoriaService {
           var goles_visitante = partido.goles_visitante;
 
           var tablaPuntaje = tabla.tabla;
-
-          //console.log("Tabla", tablaPuntaje);
           
           var fila_equipo_local = tablaPuntaje.filter(function (fila) {
             return fila.id_equipo == id_equipo_local;
@@ -219,18 +215,6 @@ class CategoriaService {
 
           CategoriaService.computarJugado_Goles(fila_equipo_local,goles_local,goles_visitante);
           CategoriaService.computarJugado_Goles(fila_equipo_visitante,goles_visitante,goles_local);
-
-// ------------------------------------------------------------------------------------------------------------
-      /*   console.log("Tabla equipo local", fila_equipo_local);
-
-          console.log("Tabla equipo visitante", fila_equipo_visitante);
-
-
-          console.log("-------------------------------------------------");
-          console.log("TABLA",tabla);  */ 
-//-------------------------------------------------------------------------------------------------------------
-          ///ACÁ TENGO QUE ACTUALIZAR LA TABLA! 
-          //console.log(tabla);
           
           return tabla;
         }
@@ -272,7 +256,6 @@ class CategoriaService {
 
         for (var i in partidos_jugados){
           var partidoJugado = partidos_jugados[i];
-          console.log("Iteracion",i);
           tabla_computada = await CategoriaService.computarPartido(tabla_computada,partidoJugado);
         }
 
@@ -281,29 +264,34 @@ class CategoriaService {
 
       static async refrescarTabla(id_categoria){
         
-        try {
-        const tabla_inicial = await this.generarTablaInicial(id_categoria);  // {"tabla": { ...., .... }}
-
+      try {
+        const tabla_inicial = await this.generarTablaInicial(id_categoria);  // {"tabla": { ...., .... }} 
         const tabla_calculada = await this.computarPartidosJugados(id_categoria,tabla_inicial);
 
         const categoria = await CategoriaService.obtenerTabla(id_categoria);
         const id_tabla = categoria.id_tabla;
-
         const actualizacion_tabla = await TablaService.actualizarTabla(id_tabla,tabla_calculada);
-        
-        return actualizacion_tabla;
 
-        } catch (error) {
-          
+        return actualizacion_tabla;
+      } 
+      catch (error) {
           throw error;
         }
-         
-        
-        
       }
       
+      static async goleadores(id_categoria){
+        const goleadores = await Jugador_convierte_Partido.obtenerTablaGoleadores(id_categoria);
 
-
+        var goleadores_ordenados = goleadores.sort(function(elem1, elem2){ 
+          let a = parseInt(elem1.goles);
+          let b = parseInt(elem2.goles);
+          if (a<b) {
+          return 1;
+          }
+        });
+        return goleadores_ordenados;
+      }
+        
   } 
 
   export default CategoriaService;

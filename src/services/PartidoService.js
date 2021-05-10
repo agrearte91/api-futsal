@@ -20,6 +20,7 @@ class PartidoService {
     static async obtenerPartidos(){
       try {
         return await Partido.findAll();
+        //return await Partido.consulta(14);
       } 
       catch (error) {
         throw error;   

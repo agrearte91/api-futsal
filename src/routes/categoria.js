@@ -13,7 +13,7 @@ router.get('/:id/partidos',CategoriaController.obtenerPartidos); //obtener todos
 
 router.get('/:id/tabla',CategoriaController.obtenerTabla);  //obtener el objeto Tabla, correspondiente a una categoría
 router.get('/:id/refrescarTabla', CategoriaController.refrescarTabla);  //refrescar (recalcula partidos jugados) y retorna la tabla de posiciones
-
+router.get('/:id/goleadores', CategoriaController.goleadores) //obtener la tabla de goleadores de la categoria
 
 router.post('/', CategoriaController.crearCategoria);  //recibe una Categoría a insertar en la base (Requiere, torneo previamente creado)
 router.post('/:id/agregarEquipos',CategoriaController.agregarEquipos); //agrego todos los equipos

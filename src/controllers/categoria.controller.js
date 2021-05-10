@@ -3,8 +3,7 @@ import Util from '../utils/Utils';
 import Categoria_contiene_EquipoService from '../services/Categoria_contiene_EquipoService';
 import TablaService from '../services/TablaService';
 import PartidoService from '../services/PartidoService';
-import Categoria from '../models/Categoria';
-import Partido from '../models/Partido';
+
 
 const util = new Util();
 
@@ -35,10 +34,10 @@ class CategoriaController {
             const categoria = await CategoriaService.obtenerCategoriaDelTorneo(nombre_categoria,anio_torneo,tipo_torneo);
             
             if(categoria){
-                util.setSuccess(200,'Categoria obtenidas',categoria);
+                util.setSuccess(200,'Categoria obtenida',categoria);
             }
             else{
-                util.setSuccess(200,'No se encuentran Categoría'); 
+                util.setSuccess(200,'No se encuentra la Categoría'); 
             }
             return util.send(res);
         } 
@@ -68,25 +67,20 @@ class CategoriaController {
 
     static async obtenerCategoria(req, res){
         try {
-                const id_categoria = req.params.id;
-                const categoria = await CategoriaService.obtenerCategoria(id_categoria);
-
-               // const tabla = await CategoriaService.generarTablaInicial(id_categoria); //Genera tabla inicial
-
-                //const partidos = await CategoriaService.obtenerPartidos(id_categoria);
-            
+            const id_categoria = req.params.id;
+            const categoria = await CategoriaService.obtenerCategoria(id_categoria);
             if(categoria){
-                //util.setSuccess(200,'Categoria obtenida',tabla); //funciona bien
-                
+                //const goleadores = await CategoriaService.computarTablaGoleadores(id_categoria);
+                // util.setSuccess(200,'Categoria obtenida',goleadores);
                 util.setSuccess(200,'Categoria obtenida',categoria);
             }
             else{
-                util.setError(404,`Categoria no encontrada`);
+                util.setError(200,`Categoria no encontrada`);
             }
             return util.send(res);
-        } 
+        }
         catch (error) {
-            util.setError(404,error.message);   
+            util.setError(404,error.message);
             return util.send(res);   
         }
     }
@@ -102,7 +96,7 @@ class CategoriaController {
             }
             else{
                 if(categoriaActualizada==null){
-                    util.setError(404,`Categoria con id:"${id_categoria}" no encontrada`);
+                    util.setError(200,`Categoria con id:"${id_categoria}" no encontrada`);
                 }
                 else{
                     util.setSuccess(200,'Categoría actualizada',categoriaActualizada);
@@ -125,7 +119,7 @@ class CategoriaController {
                 util.setSuccess(200,'Categoria eliminada');
             }
             else{
-                util.setError(404,`Categoria con id: ${dni} no encontrada`);
+                util.setSuccess(200,`Categoria con id: ${id_categoria} no encontrada`);
             } 
 
             return util.send(res);
@@ -165,14 +159,16 @@ class CategoriaController {
             const equipos = req.body;
 
             if(categoria){
-                await Categoria_contiene_EquipoService.agregarEquipos(id_categoria,equipos);
-
-                //const tabla = await CategoriaService.generarTablaInicial(id_categoria); //Genera tabla inicial, después de agregar a los equipos.
-                
-                util.setSuccess(200,`Equipos agregados a la categoria ${id_categoria} `,equipos);
+                const equiposAgregados = await Categoria_contiene_EquipoService.agregarEquipos(id_categoria,equipos); 
+                if (equiposAgregados){
+                    util.setSuccess(200,`Equipos agregados a la categoria ${id_categoria} `,equipos);
+                }
+                else{
+                    util.setSuccess(200,`No se pudieron agregar equipos a la categoría ${id_categoria} `,equipos);
+                }               
             }
             else{
-                util.setError(404,`Categoria con id: ${id_categoria} no encontrada`);
+                util.setError(200,`Categoria con id: ${id_categoria} no encontrada`);
             } 
 
             return util.send(res);
@@ -194,8 +190,7 @@ class CategoriaController {
             }
             else{
                 util.setError(404,`Categoria con id: ${id_categoria} no encontrada`);
-            } 
-
+            }
             return util.send(res);
         } 
         catch (error) {
@@ -218,9 +213,8 @@ class CategoriaController {
                 }
             }
             else{
-                util.setError(404,`Partidos de la Categoria con id: ${id_categoria} no encontrados`);
+                util.setSuccess(200,`Partidos de la Categoria con id: ${id_categoria} no encontrados`);
             } 
-
             return util.send(res);
         } 
         catch (error) {
@@ -229,15 +223,10 @@ class CategoriaController {
         }
     }
 
-
     static async obtenerTabla(req,res){
         try {
             const id_categoria = req.params.id;
-
-
             const tabla = await CategoriaService.obtenerTabla(id_categoria);
-
-            //const tablaFicticia = await CategoriaService.generarTablaInicial(id_categoria); //Genera tabla inicial, después de agregar a los equipos
 
             if(tabla){
                 util.setSuccess(200,`Tabla de la categoria ${id_categoria}`,tabla);
@@ -256,6 +245,25 @@ class CategoriaController {
     static async obtenerTorneo(id_categoria){
         const torneo = await CategoriaService.obtenerTorneo(id_categoria);
         return torneo; 
+    }
+
+    static async goleadores(req,res){
+        try {
+            const id_categoria = req.params.id;
+            const goleadores = await CategoriaService.goleadores(id_categoria);
+            
+            if (goleadores!=null){
+                util.setSuccess(200,`Goleadores calculados con éxito`, goleadores);
+            }
+            else{
+                util.setError(404,`Goleadores no se pudieron calcular`);
+            }
+            return util.send(res);
+
+        } catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
     }
 
     static async refrescarTabla(req,res){

@@ -9,6 +9,7 @@ import equipoRoutes from './routes/equipo';
 import listaInscripcionRoutes from './routes/listaInscripcion';
 import tablaRoutes from './routes/tabla';
 import partidoRoutes from './routes/partido';
+import golRoutes from './routes/gol';
 
 
 
@@ -30,6 +31,8 @@ app.use('/api/equipo', equipoRoutes);
 app.use('/api/listaInscripcion', listaInscripcionRoutes);
 app.use('/api/tabla', tablaRoutes);
 app.use('/api/partido', partidoRoutes);
+app.use('/api/gol', golRoutes);
+
 
 
 export default app;

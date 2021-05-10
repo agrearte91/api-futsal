@@ -1,6 +1,4 @@
 import Categoria_contiene_Equipo from '../models/Categoria_contiene_Equipo';
-import CategoriaService from './CategoriaService';
-
 
 class Categoria_contiene_EquipoService {
   static async agregarEquipos(id_categoria,equipos) {    
@@ -32,22 +30,20 @@ class Categoria_contiene_EquipoService {
   }
   
   static async eliminarEquipo(id_equipo,id_categoria){
-      try {
-        const equipoEnCategoria = await Categoria_contiene_Equipo.findOne({where:{id_equipo:id_equipo,id_categoria:id_categoria}});
-
-        if(equipoEnCategoria){
-          const equipoEliminado = await Categoria_contiene_Equipo.destroy({where:{id_equipo:id_equipo,id_categoria:id_categoria}});
-          return equipoEliminado; 
-        }
-        else{
-          return null;
-        }
+    try {
+      const equipoEnCategoria = await Categoria_contiene_Equipo.findOne({where:{id_equipo:id_equipo,id_categoria:id_categoria}});
+      if(equipoEnCategoria){
+        const equipoEliminado = await Categoria_contiene_Equipo.destroy({where:{id_equipo:id_equipo,id_categoria:id_categoria}});
+        return equipoEliminado; 
       }
-      catch (error) {
-        throw error;
+      else{
+        return null;
       }
     }
-} 
-  
-  export default Categoria_contiene_EquipoService;
+    catch (error) {
+      throw error;
+    }
+  }
+}
+export default Categoria_contiene_EquipoService;
 

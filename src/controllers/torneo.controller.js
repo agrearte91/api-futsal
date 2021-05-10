@@ -113,7 +113,6 @@ class TorneoController {
             const tipo_torneo = req.params.tipo;
 
             const listas = await TorneoService.obtenerListas(anio_torneo,tipo_torneo);
-        //console.log("Las lista obtenidas son ", listas);
            
             if(listas){
                 util.setSuccess(200,`Listas del torneo: "${tipo_torneo}" del año: "${anio_torneo}"`,listas);

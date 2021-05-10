@@ -38,7 +38,7 @@ class PartidoController {
             const partidos = await PartidoService.obtenerPartidos();
             
             if(partidos && partidos.length > 0){
-                util.setSuccess(200,'Partidos obtenidos',partidos);
+                util.setSuccess(200,'Partidos obtenidos BORRAR JEJEJEJEJEJEJEEJE',partidos);
             }
             else{
                 util.setSuccess(200,'No se encuentran Partidos'); 

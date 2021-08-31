@@ -50,6 +50,25 @@ class Jugador_convierte_PartidoController {
         }
     }
 
+    static async obtenerTuplasEnPartido(req, res){
+        try {
+            const id_partido = req.params.id_partido;
+            const tuplas = await Jugador_convierte_PartidoService.obtenerTuplasEnPartido(id_partido);
+            
+            if(tuplas && tuplas.length > 0){
+                util.setSuccess(200,`Tuplas (jugador-goles) del partido con id: ${id_partido} obtenidas`, tuplas);
+            }
+            else{
+                util.setSuccess(200,`No se encuentran Tuplas (jugador-goles) en el partido con id: '${id_partido}`); 
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
+        }
+    }
+
     static async obtenerTupla(req, res){
         try {
                 const dni_jugador = req.params.dni_jugador;

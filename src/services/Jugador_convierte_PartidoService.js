@@ -38,6 +38,15 @@ class Jugador_convierte_PartidoService {
       }
     }
 
+    static async obtenerTuplasEnPartido(id_partido){
+      try {
+        return await Jugador_convierte_Partido.findAll({raw:true,where:{id_partido:id_partido}});
+      } 
+      catch (error) {
+        throw error;   
+      }
+    }
+
 } 
 
 export default Jugador_convierte_PartidoService;

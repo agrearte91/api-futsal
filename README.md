@@ -353,7 +353,7 @@ router.post ('/crearPartidos',PartidoController.crearPartidos); ////Recibe un ar
 - req.body =  (atributos opcionales: "dni_arbitro","dni_asistente","hora");  
 - atributo "jugado": false (por defecto)
  ```json
-            {
+          [  {
             "nro_fecha": 2,
             "goles_local": 5,
             "goles_visitante": 4,
@@ -364,7 +364,9 @@ router.post ('/crearPartidos',PartidoController.crearPartidos); ////Recibe un ar
             "dni_arbitro": null,
             "dni_asistente": null,
             "hora": null
-        }
+        }, 
+        //otro partido
+        ]
  ```
 
 ```js 

@@ -337,3 +337,62 @@ router.put('/:id',TablaController.actualizarTabla);
 router.delete('/:id',TablaController.eliminarTabla); 
 ```
 
+-----------------------------------------------------
+Métodos de ruta RECURSO 'Partido'
+-----------------------------------------------------
+
+
+ ```js 
+router.get('/',PartidoController.obtenerPartidos);
+
+router.post('/',PartidoController.crearPartido);
+
+router.post ('/crearPartidos',PartidoController.crearPartidos); ////Recibe un arreglo objetos Partido para ser creadas, se insertan todos (si no hay error), o ninguno (si hay error)
+
+```
+- req.body =  (atributos opcionales: "dni_arbitro","dni_asistente","hora");  
+- atributo "jugado": false (por defecto)
+ ```json
+            {
+            "nro_fecha": 2,
+            "goles_local": 5,
+            "goles_visitante": 4,
+            "jugado": true, 
+            "id_categoria": 14,
+            "id_equipo_local": 1,
+            "id_equipo_visitante": 12,
+            "dni_arbitro": null,
+            "dni_asistente": null,
+            "hora": null
+        }
+ ```
+
+```js 
+router.get('/:id',PartidoController.obtenerPartido);
+
+router.put('/actualizarPartido/:id',PartidoController.actualizarPartido);
+
+router.put('/actualizarPartidos',PartidoController.actualizarPartidos);
+
+router.delete('/:id',PartidoController.eliminarPartido); 
+
+```
+
+-----------------------------------------------------
+Métodos de ruta RECURSO 'Gol'
+-----------------------------------------------------
+
+
+ ```js 
+router.get('/',Jugador_convierte_Partido.obtenerTuplas);
+
+router.get('/obtenerGoles/:id_partido',Jugador_convierte_Partido.obtenerTuplasEnPartido);  //obtener los goles (y autores) registrados en un partido con id_partido
+
+router.get('/:dni_jugador&:id_partido',Jugador_convierte_Partido.obtenerTupla);
+
+router.post('/',Jugador_convierte_Partido.crearTupla);
+
+router.post('/crearTuplas',Jugador_convierte_Partido.crearTuplas);
+```
+
+

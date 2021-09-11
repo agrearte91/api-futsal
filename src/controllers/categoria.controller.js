@@ -47,6 +47,28 @@ class CategoriaController {
         }
     }
 
+    static async obtenerCategoriasDelTorneo(req,res) {
+        try {
+            const anio_torneo = req.params.anio;
+            const tipo_torneo = req.params.tipo;
+
+            const categorias = await CategoriaService.obtenerCategoriasDelTorneo(anio_torneo,tipo_torneo);
+            
+            if(categorias){
+                util.setSuccess(200,'Categorias obtenida',categorias);
+            }
+            else{
+                util.setSuccess(200,'No se encuentran las Categorías'); 
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(400,error.message);   
+            return util.send(res);   
+        }
+    }
+
+
     static async obtenerCategorias(req, res){
         try {
             const categorias = await CategoriaService.obtenerCategorias();

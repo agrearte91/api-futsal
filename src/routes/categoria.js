@@ -7,6 +7,9 @@ import CategoriaController from '../controllers/categoria.controller';
 router.get('/',CategoriaController.obtenerCategorias);
 router.get('/:id',CategoriaController.obtenerCategoria);
 router.get('/:nombre/torneo/:anio/:tipo',CategoriaController.obtenerCategoriaDelTorneo);
+router.get('/torneo/:anio/:tipo',CategoriaController.obtenerCategoriasDelTorneo);
+
+
 
 router.get('/:id/equipos',CategoriaController.obtenerEquipos);   //obtener todos los equipos que pertenezcan a una categoría
 router.get('/:id/partidos',CategoriaController.obtenerPartidos); //obtener todos los partidos de una categoría

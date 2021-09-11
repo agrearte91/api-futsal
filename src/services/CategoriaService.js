@@ -53,6 +53,22 @@ class CategoriaService {
       }
     }
 
+    static async obtenerCategoriasDelTorneo(anio_torneo, tipo_torneo){
+      try {
+        const anio_torneo2 = parseInt(anio_torneo);
+        const categorias = await Categoria.findAll({raw: true,where:{anio_torneo:anio_torneo2,tipo_torneo:tipo_torneo}});
+        if(categorias==null){
+          return null;
+        }
+        return categorias;
+      }
+      catch (error) {
+        throw error;
+      }
+    }
+
+
+
     static async actualizarCategoria(id_categoria,categoria){
       try {
         const categoriaExistente = await Categoria.findByPk(id_categoria);

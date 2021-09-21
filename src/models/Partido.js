@@ -40,6 +40,9 @@ const Partido = sequelize.define('Partido', {
     },
     hora: {
         type: Sequelize.TIME
+    },
+    fecha:{
+        type: Sequelize.DATE
     }
 }, {
     timestamps: false,
@@ -52,13 +55,16 @@ Partido.belongsTo(Equipo,{foreignKey: 'id_equipo_visitante',as:'equipoVisitante'
 Partido.belongsTo(Persona,{foreignKey: 'dni_arbitro',as:'arbitro'});
 Partido.belongsTo(Persona,{foreignKey: 'dni_asistente',as:'asistente'});
 
-//Partido.belongsToMany(Jugador_convierte_Gol, {foreignKey: 'id_partido', through:'partidos'} );
-
 Partido.consulta = async function (id_categoria) { 
     return await sequelize.query(
         'SELECT * from "Partido" where "Partido".id_categoria='+id_categoria+' and "Partido".jugado=true;'
 ,{ type: sequelize.QueryTypes.SELECT});
  };
- 
+
+ Partido.obtenerPartidosDeCategoria = async function (id_categoria) { 
+    return await sequelize.query(
+        ' SELECT part.nro_fecha, id_partido, part.id_equipo_local, equipo_local.nombre as nombre_local, part.id_equipo_visitante, equipo_visitante.nombre as nombre_visitante, part.jugado, goles_local, goles_visitante, part.fecha, part.hora FROM public."Partido" as part right outer join "Equipo" as equipo_local on (part.id_equipo_local = equipo_local.id_equipo) right outer join "Equipo" as equipo_visitante on (part.id_equipo_visitante = equipo_visitante.id_equipo) where part.id_categoria='+id_categoria+ 
+        ' order by nro_fecha;',{ type: sequelize.QueryTypes.SELECT});
+ };
 
 export default Partido;

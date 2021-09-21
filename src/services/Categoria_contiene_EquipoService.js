@@ -21,7 +21,8 @@ class Categoria_contiene_EquipoService {
   
   static async obtenerEquipos(id_categoria){
     try {
-      const equipos = await Categoria_contiene_Equipo.findAll({raw:true,where:{id_categoria:id_categoria}});
+      //const equipos = await Categoria_contiene_Equipo.findAll({raw:true,where:{id_categoria:id_categoria}});
+      const equipos = await Categoria_contiene_Equipo.obtenerEquipos(id_categoria);
       return equipos;
     }
     catch (error) {

@@ -144,7 +144,8 @@ class CategoriaService {
       
       static async obtenerPartidos(id_categoria){
         try {
-          const partidos = await Partido.findAll({raw: true,where:{id_categoria:id_categoria}});
+         // const partidos = await Partido.findAll({raw: true,where:{id_categoria:id_categoria}});
+          const partidos = await Partido.obtenerPartidosDeCategoria(id_categoria);
           return partidos;
         } 
         catch (error) {
@@ -287,8 +288,50 @@ class CategoriaService {
         const categoria = await CategoriaService.obtenerTabla(id_categoria);
         const id_tabla = categoria.id_tabla;
         const actualizacion_tabla = await TablaService.actualizarTabla(id_tabla,tabla_calculada);
+        //console.log(tabla_calculada);
+        if (actualizacion_tabla){
 
-        return actualizacion_tabla;
+          tabla_calculada.tabla.sort((a, b) => {
+
+            if( a.puntos == b.puntos){
+              if(a.diferencia_goles == b.diferencia_goles){
+                if(a.goles_favor==b.goles_favor){
+                  if(a.nombre_equipo<b.nombre_equipo){
+                    return -1;
+                  }
+                  else{
+                    return 1;
+                  }
+                }
+                else{
+                  if(a.goles_favor<b.goles_favor){
+                    return 1;
+                  }
+                  else{
+                    return -1;
+                  }
+                }
+              }
+              else{
+                if(a.diferencia_goles<b.diferencia_goles){
+                  return 1;
+                }
+                else{
+                  return -1;
+                }
+              }
+            }
+            else{
+              if (a.puntos < b.puntos) return 1;
+              if (a.puntos > b.puntos) return -1;
+            }
+            
+            return 0;
+            });
+        }
+        
+
+        return tabla_calculada;
       } 
       catch (error) {
           throw error;
@@ -296,16 +339,13 @@ class CategoriaService {
       }
       
       static async goleadores(id_categoria){
-        const goleadores = await Jugador_convierte_Partido.obtenerTablaGoleadores(id_categoria);
-
-        var goleadores_ordenados = goleadores.sort(function(elem1, elem2){ 
-          let a = parseInt(elem1.goles);
-          let b = parseInt(elem2.goles);
-          if (a<b) {
-          return 1;
-          }
-        });
-        return goleadores_ordenados;
+        try {
+          const goleadores = await Jugador_convierte_Partido.obtenerTablaGoleadores(id_categoria);
+           return goleadores;
+         } 
+         catch (error) {
+           throw error;
+         }
       }
         
   } 

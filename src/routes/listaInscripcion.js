@@ -7,8 +7,8 @@ router.get('/',ListaInscripcionController.obtenerListasInscripcion);
 router.get('/:id',ListaInscripcionController.obtenerListaInscripcion);
 router.get('/jugadoresListados/:id',ListaInscripcionController.obtenerJugadores); //obtener los jugadores listados pertenecientes a una Lista
 
-router.post('/', ListaInscripcionController.crearListaInscripcion);
-router.post('/agregarJugadores/:id',ListaInscripcionController.agregarJugadoresEnLista); //recibe una lista de jugadores para insertar en lista :id
+router.post('/', ListaInscripcionController.crearListaInscripcion);  //Crear una lista de Inscripción (vacía) para un equipo
+router.post('/agregarJugadores/:id',ListaInscripcionController.agregarJugadoresEnLista); //recibe un arreglo de jugadores para insertar en lista :id
 
 router.put('/:id',ListaInscripcionController.actualizarListaInscripcion);
 

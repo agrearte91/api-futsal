@@ -12,7 +12,7 @@ router.get('/torneo/:anio/:tipo',CategoriaController.obtenerCategoriasDelTorneo)
 
 
 router.get('/:id/equipos',CategoriaController.obtenerEquipos);   //obtener todos los equipos que pertenezcan a una categoría
-router.get('/:id/partidos',CategoriaController.obtenerPartidos); //obtener todos los partidos de una categoría
+router.get('/:id/partidos',CategoriaController.obtenerPartidos); //obtener todos los partidos (jugados o no) de una categoría
 
 router.get('/:id/tabla',CategoriaController.obtenerTabla);  //obtener el objeto Tabla, correspondiente a una categoría
 router.get('/:id/refrescarTabla', CategoriaController.refrescarTabla);  //refrescar (recalcula partidos jugados) y retorna la tabla de posiciones

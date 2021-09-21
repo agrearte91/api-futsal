@@ -19,7 +19,7 @@ class ListaInscripcionController {
             return util.send(res);
         }
     }
-
+    
     static async obtenerListasInscripcion(req, res){
         try {
             const listasInscripcion = await ListaInscripcionService.obtenerListasInscripcion();
@@ -44,17 +44,12 @@ class ListaInscripcionController {
             const listaInscripcion = await ListaInscripcionService.obtenerListaInscripcion(id_lista);
 
             if(listaInscripcion) {
-                /*const equipo = await listaInscripcion.getEquipo();
-                console.log("Información del equipo de la lista: ",equipo.dataValues);
-                
-                const torneo = await ListaInscripcionService.obtenerTorneo(listaInscripcion.anio_torneo,listaInscripcion.tipo_torneo);
-                console.log("Información del torneo de la lista: ",torneo);  */
-                util.setSuccess(200,'ListaInscripcion obtenida',listaInscripcion);
-
-                
+                const equipo = await listaInscripcion.getEquipo();
+                const nombre_equipo = (equipo.dataValues).nombre;
+                util.setSuccess(200,`Lista de Inscripción del equipo -${nombre_equipo}- obtenida`,listaInscripcion);
             }
             else{
-                util.setError(404,`ListaInscripcion no encontrada`);
+                util.setError(404,`Lista de Inscripción no encontrada`);
             }
             return util.send(res);
         } 

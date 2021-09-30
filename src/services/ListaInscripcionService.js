@@ -90,6 +90,17 @@ class ListaInscripcionService {
         }
       }
 
+      static async obtenerListaInscripcionEquipoTorne(id_equipo, anio_torneo, tipo_torneo) {
+        try {
+            const id_equipo2 = parseInt(id_equipo);
+            const anio_torneo2 = parseInt(anio_torneo);
+            const lista = await ListaInscripcion.findOne({ where: { id_equipo: id_equipo2, anio_torneo: anio_torneo2, tipo_torneo: tipo_torneo } });
+            return lista;
+        } catch (error) {
+            throw error;
+        }
+    }
+
 } 
 
   export default ListaInscripcionService;

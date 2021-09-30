@@ -209,6 +209,28 @@ class ListaInscripcionController {
             return util.send(res);   
         }
     }
+
+    static async obtenerListaInscripcionEquipoTorneo(req, res) {
+        try {
+            const id_equipo = req.params.id_equipo;
+            const anio_torneo = req.params.anio_torneo;
+            const tipo_torneo = req.params.tipo_torneo;
+
+            const listaInscripcion = await ListaInscripcionService.obtenerListaInscripcionEquipoTorne(id_equipo, anio_torneo, tipo_torneo);
+
+            if (listaInscripcion) {
+                const equipo = await listaInscripcion.getEquipo();
+                const nombre_equipo = (equipo.dataValues).nombre;
+                util.setSuccess(200, `Lista de Inscripción del equipo -${nombre_equipo}- obtenida`, listaInscripcion);
+            } else {
+                util.setError(404, `Lista de Inscripción no encontrada`);
+            }
+            return util.send(res);
+        } catch (error) {
+            util.setError(404, error.message);
+            return util.send(res);
+        }
+    }
 }
 
 export default ListaInscripcionController;

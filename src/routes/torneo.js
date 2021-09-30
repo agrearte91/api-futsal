@@ -6,6 +6,8 @@ import TorneoController from '../controllers/torneo.controller';
 router.get('/:anio&:tipo',TorneoController.obtenerTorneo);
 router.get('/',TorneoController.obtenerTorneos);
 router.get('/listas/:anio&:tipo',TorneoController.obtenerListas);
+router.get('/partidosDeHoy',TorneoController.obtenerPartidosDeHoy);
+
 
 router.post('/', TorneoController.crearTorneo);  //recibe un Torneo a insertar en la base
 

@@ -338,13 +338,18 @@ class CategoriaController {
 
             const cargaPartidos = await PartidoService.actualizarPartidos(partidos); 
 
-            if (cargaPartidos){
-                util.setSuccess(200,`Partidos de la categoría actualizados con éxito`,cargaPartidos);
+            if(cargaPartidos==0){
+                util.setError(400,`Partidos no se pudieron actualizar. Chequear parámetros`);
             }
             else{
-                util.setError(404,`Partidos de la categoría no se pudieron actualizar`);
+                if (cargaPartidos!=null){
+                    util.setSuccess(200,`Partidos de la categoría actualizados con éxito`,cargaPartidos);
+                }
+                else{
+                    util.setError(404,`Partidos de la categoría no se pudieron actualizar`);
+                }
             }
-
+            return util.send(res);
         } catch (error) {
             util.setError(404, error.message);
             return util.send(res);

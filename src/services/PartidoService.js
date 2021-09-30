@@ -41,6 +41,7 @@ class PartidoService {
         throw error;
       }
     }
+    
 
     static async actualizarPartido(id_partido,partido){
       try {
@@ -67,8 +68,10 @@ class PartidoService {
 
       static async actualizarPartidos(partidos){
         try {
-            const partidos_actualizados = await Partido.bulkCreate(partidos,{updateOnDuplicate: ["goles_local","goles_visitante",
-            "jugado","dni_arbitro","dni_asistente"],returning:true}); //los campos que se actualizarán (solamente)
+            if(partidos!=null & partidos.length!=0){
+
+              const partidos_actualizados = await Partido.bulkCreate(partidos,{updateOnDuplicate: ["goles_local","goles_visitante",
+            "jugado","dni_arbitro","dni_asistente","fecha","hora"],returning:true}); //los campos que se actualizarán (solamente)
   
             if(partidos_actualizados==0){ //si no hay columnas afectadas
               return 0;
@@ -76,6 +79,11 @@ class PartidoService {
             else{
               return partidos_actualizados; 
             }
+          }
+          else{
+            return 0;
+          }
+            
         }
          catch (error) {
            throw new Error (error.parent.detail);

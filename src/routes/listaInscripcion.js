@@ -6,6 +6,7 @@ import ListaInscripcionController from '../controllers/listaInscripcion.controll
 router.get('/',ListaInscripcionController.obtenerListasInscripcion);
 router.get('/:id',ListaInscripcionController.obtenerListaInscripcion);
 router.get('/jugadoresListados/:id',ListaInscripcionController.obtenerJugadores); //obtener los jugadores listados pertenecientes a una Lista
+router.get('/:id_equipo/:anio_torneo/:tipo_torneo', ListaInscripcionController.obtenerListaInscripcionEquipoTorneo)
 
 router.post('/', ListaInscripcionController.crearListaInscripcion);  //Crear una lista de Inscripción (vacía) para un equipo
 router.post('/agregarJugadores/:id',ListaInscripcionController.agregarJugadoresEnLista); //recibe un arreglo de jugadores para insertar en lista :id

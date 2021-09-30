@@ -1,6 +1,8 @@
 import TorneoService from '../services/TorneoService';
 import Util from '../utils/Utils';
+import Partido from '../models/Partido';
 import Torneo from '../models/Torneo';
+import PartidoService from '../services/PartidoService';
 
 const util = new Util();
 
@@ -119,6 +121,24 @@ class TorneoController {
             }
             else{
                 util.setError(404,`Torneo: "${tipo_torneo}" del año: "${anio_torneo}" no encontrado`);
+            }
+            return util.send(res);
+        } 
+        catch (error) {
+            util.setError(404,error.message);   
+            return util.send(res);   
+        }
+    }
+
+    static async obtenerPartidosDeHoy(req,res){
+        try {
+            const partidos = await Partido.obtenerPartidosDeHoy();
+           
+            if(partidos){
+                util.setSuccess(200,`Partidos de hoy `,partidos);
+            }
+            else{
+                util.setError(404,`No se encontraron partidos de hoy`);
             }
             return util.send(res);
         } 
